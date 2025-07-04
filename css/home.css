@@ -1,0 +1,67 @@
+/* Estilos Específicos para a Home */
+.header {
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 2.8em;
+    margin-bottom: 5px;
+}
+
+.tagline {
+    font-size: 1.2em;
+    color: #555;
+    font-weight: 300;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.btn {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.btn-icon {
+    font-size: 2em;
+}
+
+.btn-text {
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.btn-desc {
+    font-size: 0.9em;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.7);
+    margin-top: 5px;
+}
+
+.btn-primary {
+    background-color: #ffc107; /* Amarelo */
+    color: #000;
+}
+
+.btn-secondary {
+    background-color: #343a40; /* Cinza escuro */
+    color: #fff;
+}
+
+.btn-tertiary {
+    background-color: #f8f9fa; /* Branco */
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-map {
+    background-color: #17a2b8; /* Azul info */
+    color: #fff;
+}

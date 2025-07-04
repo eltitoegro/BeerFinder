@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador - BeerFinder</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/comparador.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="index.html" class="back-link">&larr; Voltar</a>
+            <h1>Compare e Economize</h1>
+            <p>Preencha os dados das cervejas para ver qual vale mais a pena.</p>
+        </header>
+
+        <main>
+            <form id="compareForm">
+                <div class="form-section">
+                    <label for="estabelecimento">Onde você está comprando?</label>
+                    <input type="text" id="estabelecimento" placeholder="Nome do mercado ou bar" required>
+                </div>
+
+                <div class="comparison-grid">
+                    <!-- Cerveja 1 -->
+                    <div class="beer-card">
+                        <h2>Cerveja 1</h2>
+                        <label for="marca1">Marca</label>
+                        <input type="text" id="marca1" placeholder="Ex: Skol, Brahma" required>
+                        
+                        <label for="ml1">Volume</label>
+                        <select id="ml1" required>
+                            <option value="269">269 ml (Lata palito)</option>
+                            <option value="350">350 ml (Lata)</option>
+                            <option value="473">473 ml (Latão)</option>
+                            <option value="600">600 ml (Garrafa)</option>
+                            <option value="1000">1000 ml (Litro)</option>
+                        </select>
+
+                        <label for="preco1">Preço (R$)</label>
+                        <input type="number" id="preco1" placeholder="Ex: 3.50" step="0.01" required>
+                    </div>
+
+                    <!-- Cerveja 2 -->
+                    <div class="beer-card">
+                        <h2>Cerveja 2</h2>
+                        <label for="marca2">Marca</label>
+                        <input type="text" id="marca2" placeholder="Ex: Heineken, Corona" required>
+
+                        <label for="ml2">Volume</label>
+                        <select id="ml2" required>
+                            <option value="269">269 ml (Lata palito)</option>
+                            <option value="350">350 ml (Lata)</option>
+                            <option value="473">473 ml (Latão)</option>
+                            <option value="600">600 ml (Garrafa)</option>
+                            <option value="1000">1000 ml (Litro)</option>
+                        </select>
+
+                        <label for="preco2">Preço (R$)</label>
+                        <input type="number" id="preco2" placeholder="Ex: 5.00" step="0.01" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Comparar Preços</button>
+            </form>
+
+            <div id="resultado" class="resultado-card hidden">
+                <!-- O resultado da comparação aparecerá aqui -->
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Juntos, pela cerveja mais barata!</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/comparador.js"></script>
+</body>
+</html>

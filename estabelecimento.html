@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estabelecimento - BeerFinder</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="index.html" class="btn btn-back">← Voltar</a>
+            <h1 class="logo">🏪 Sou Estabelecimento</h1>
+            <p class="tagline">Cadastre seu comércio no BeerFinder</p>
+        </header>
+
+        <main class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Cadastre seu Estabelecimento</h2>
+                </div>
+                
+                <form id="estabelecimentoForm">
+                    <div class="form-group">
+                        <label for="nomeEstabelecimento" class="form-label">Nome do Estabelecimento</label>
+                        <input type="text" 
+                               id="nomeEstabelecimento" 
+                               class="form-input" 
+                               placeholder="Ex: Mercado do João, Padaria Central..."
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipoEstabelecimento" class="form-label">Tipo de Estabelecimento</label>
+                        <select id="tipoEstabelecimento" class="form-select" required>
+                            <option value="">Selecione...</option>
+                            <option value="mercado">Mercado</option>
+                            <option value="padaria">Padaria</option>
+                            <option value="conveniencia">Conveniência</option>
+                            <option value="bar">Bar</option>
+                            <option value="restaurante">Restaurante</option>
+                            <option value="distribuidora">Distribuidora</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contato" class="form-label">Contato (WhatsApp ou Telefone)</label>
+                        <input type="tel" 
+                               id="contato" 
+                               class="form-input" 
+                               placeholder="Ex: (48) 99999-9999"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horarioFuncionamento" class="form-label">Horário de Funcionamento</label>
+                        <input type="text" 
+                               id="horarioFuncionamento" 
+                               class="form-input" 
+                               placeholder="Ex: 7h às 22h - Seg a Dom">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Localização</label>
+                        <button type="button" 
+                                class="btn btn-secondary" 
+                                id="getLocationBtnEstab">
+                            📍 Usar Localização Atual
+                        </button>
+                        <div class="mt-1">
+                            <input type="text" 
+                                   id="enderecoEstabelecimento" 
+                                   class="form-input" 
+                                   placeholder="Ou digite o endereço completo..."
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="observacoes" class="form-label">Observações (Opcional)</label>
+                        <textarea id="observacoes" 
+                                  class="form-textarea" 
+                                  placeholder="Ex: Delivery disponível, promoções especiais..."></textarea>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-success btn-full">
+                            ✅ Cadastrar Estabelecimento
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">🎯 Benefícios</h3>
+                </div>
+                <ul style="color: #666; font-size: 0.9rem; line-height: 1.4;">
+                    <li>Apareça no mapa de estabelecimentos</li>
+                    <li>Receba mais clientes interessados em cerveja</li>
+                    <li>Comunidade colaborativa e gratuita</li>
+                    <li>Destaque seus melhores preços</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/data/supabase.js"></script>
+    <script src="js/ui/estabelecimento.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

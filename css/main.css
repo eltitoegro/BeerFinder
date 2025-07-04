@@ -1,0 +1,89 @@
+/* Estilos Globais - Foco Mobile-First */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f2f5; /* Um cinza mais suave */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px; /* Otimizado para telas de celular */
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box; /* Garante que o padding não afete a largura total */
+}
+
+/* --- Hierarquia de Texto --- */
+h1, h2, h3 {
+    margin: 0 0 15px 0;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.2em; /* Título principal bem grande */
+    color: #1c1e21;
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #333;
+}
+
+p {
+    line-height: 1.6;
+    margin: 0 0 10px 0;
+}
+
+/* --- Elementos de Formulário --- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* --- Botões --- */
+.btn {
+    display: inline-block;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-primary {
+    background-color: #ffc107; /* Amarelo cerveja */
+    color: #000;
+}
+
+.btn-primary:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+}
+
+/* --- Layout --- */
+.header, .footer {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.footer {
+    margin-top: 30px;
+    color: #888;
+    font-size: 0.9em;
+}
