@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Garante que o cliente Supabase seja inicializado a partir de config.js
-    if (typeof supabase === 'undefined') {
-        console.error('Supabase client não foi encontrado. Verifique se config.js está sendo carregado corretamente.');
+    // Asegura que el cliente Supabase esté disponible globalmente desde api.js
+    if (typeof window.supabaseClient === 'undefined') {
+        console.error('Supabase client não foi encontrado. Verifique se api.js está sendo carregado corretamente.');
         return;
     }
 
@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', handleCompare);
 });
 
-// Função para salvar UMA cerveja no Supabase
+// Función para salvar UMA cerveja no Supabase
 async function salvarCerveja(cerveja) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await window.supabaseClient
             .from('cervejas')
             .insert([cerveja])
             .select();
