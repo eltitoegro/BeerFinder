@@ -1,11 +1,13 @@
 import { getOrCreateEstabelecimento } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Debug: document.getElementById(\'marca\') at DOMContentLoaded:', document.getElementById('marca'));
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
-    const marcaInput = document.getElementById('marca');
+    const marca = marcaInput.value.trim(); // Use the already fetched element
+        console.log('Debug: marcaInput.value at point of use:', marcaInput.value);
 
     // Debugging: Check if elements are found
     if (!estabelecimentoSelect) console.error('Error: #estabelecimentoSelect not found.');
@@ -18,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('populateEstabelecimentosSelect: #estabelecimentoSelect is null. Cannot populate.');
             return;
         }
+
 
     populateEstabelecimentosSelect();
 
