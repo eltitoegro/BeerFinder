@@ -1,18 +1,14 @@
 import { getOrCreateEstabelecimento } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Debug: document.getElementById(\'marca\') at DOMContentLoaded:', document.getElementById('marca'));
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
-    const marca = marcaInput.value.trim(); // Use the already fetched element
-        console.log('Debug: marcaInput.value at point of use:', marcaInput.value);
 
     // Debugging: Check if elements are found
     if (!estabelecimentoSelect) console.error('Error: #estabelecimentoSelect not found.');
     if (!newEstabelecimentoNameInput) console.error('Error: #newEstabelecimentoName not found.');
-    if (!marcaInput) console.error('Error: #marca not found.');
 
     async function populateEstabelecimentosSelect() {
         console.log('Debug: populateEstabelecimentosSelect called');
@@ -42,9 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        if (!estabelecimentoSelect || !marcaInput || !document.getElementById('volume1') || !document.getElementById('preco1') || !document.getElementById('volume2') || !document.getElementById('preco2')) {
-            console.error('Error: One or more form elements are null. Cannot submit.');
-            alert('Error interno: Faltan elementos del formulario. Por favor, recargue la página.');
+        // Get elements inside the submit listener to ensure they are available
+        const marca = document.getElementById('marca').value.trim();
+        const volume1 = parseInt(document.getElementById('volume1').value);
+        const preco1 = parseFloat(document.getElementById('preco1').value);
+        const volume2 = parseInt(document.getElementById('volume2').value);
+        const preco2 = parseFloat(document.getElementById('preco2').value);
+
+        if (!estabelecimentoSelect || !marca || !volume1 || !preco1 || !volume2 || !preco2) {
+            console.error('Error: One or more form elements are null or empty. Cannot submit.');
+            alert('Error interno: Faltan elementos del formulario o campos obligatorios. Por favor, recargue la página.');
             return;
         }
 
