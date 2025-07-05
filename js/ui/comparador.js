@@ -59,10 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { data: novo, error: errorInsert } = await window.supabaseClient
                     .from('estabelecimentos')
                     .insert([{ nome: nomeEstabelecimento }])
-                    .select('id')
-                    .single();
+                    .select('id');
                 if (errorInsert) throw errorInsert;
-                estabelecimento_id = novo.id;
+                estabelecimento_id = novo[0].id;
                 populateEstabelecimentosDatalist();
             }
 
