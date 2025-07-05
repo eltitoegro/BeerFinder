@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const preco2 = parseFloat(document.getElementById('preco2').value);
 
         if (!estabelecimentoSelect || !marca || !volume1 || !preco1 || !volume2 || !preco2) {
-            console.error('Error: One or more form elements are null or empty. Cannot submit.');
             alert('Por favor, preencha todos os campos.');
             return;
         }
@@ -64,3 +63,51 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             nomeEstabelecimento = estabelecimentoSelect.value.trim();
         }
+
+        if (!nomeEstabelecimento) {
+            alert('O nome do estabelecimento é obrigatório.');
+            return;
+        }
+
+        let estabelecimento_id = null;
+
+        try {
+            estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
+            populateEstabelecimentosSelect(); // Update the select with the new establishment if created
+        } catch (error) {
+            console.error('Erro ao processar estabelecimento:', error);
+            alert(`Ocorreu um erro: ${error.message}`);
+            return;
+        }
+
+        const cervejasParaInserir = [
+                { marca, volume: volume1, preco: preco1, estabelecimento_id, tipo_envase: 'comparador' },
+                { marca, volume: volume2, preco: preco2, estabelecimento_id, tipo_envase: 'comparador' }
+            ];
+
+            const { error: errorCerveja } = await window.supabaseClient
+                .from('cervejas')
+                .insert(cervejasParaInserir);
+
+            if (errorCerveja) throw errorCerveja;
+
+            const precoPorMl1 = preco1 / volume1;
+            const precoPorMl2 = preco2 / volume2;
+
+            let resultadoHTML = '';
+            if (precoPorMl1 < precoPorMl2) {
+                resultadoHTML = `<h2>A Opção 1 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl2 - precoPorMl1).toFixed(4)} por ml.</p>`;
+            } else if (precoPorMl2 < precoPorMl1) {
+                resultadoHTML = `<h2>A Opção 2 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl1 - precoPorMl2).toFixed(4)} por ml.</p>`;
+            }
+
+            resultadoDiv.innerHTML = resultadoHTML;
+            resultadoDiv.classList.remove('hidden');
+            alert('Comparação salva com sucesso!');
+
+        } catch (error) {
+            console.error('Erro no processo de comparação:', error);
+            alert(`Ocorreu um erro: ${error.message}`);
+        }
+    });
+});
