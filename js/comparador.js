@@ -38,20 +38,41 @@ async function handleCompare(event) {
     event.preventDefault();
 
     // 1. Coletar dados do formulário
-    const estabelecimento = document.getElementById('estabelecimento').value;
+    const estabelecimentoNome = document.getElementById('estabelecimento').value;
+
+    // Buscar o ID do estabelecimento
+    const { data: estabelecimentoData, error: estabelecimentoError } = await window.supabaseClient
+        .from('estabelecimentos')
+        .select('id')
+        .eq('nome', estabelecimentoNome)
+        .single();
+
+    if (estabelecimentoError && estabelecimentoError.code !== 'PGRST116') {
+        console.error('Erro ao buscar estabelecimento:', estabelecimentoError);
+        alert('Erro ao buscar estabelecimento. Verifique o console para mais detalhes.');
+        return;
+    }
+
+    let estabelecimentoId = null;
+    if (estabelecimentoData) {
+        estabelecimentoId = estabelecimentoData.id;
+    } else {
+        alert('Estabelecimento não encontrado. Por favor, cadastre o estabelecimento primeiro ou verifique o nome.');
+        return;
+    }
 
     const cerveja1 = {
         marca: document.getElementById('marca1').value,
         volumen_ml: parseInt(document.getElementById('ml1').value),
         preco: parseFloat(document.getElementById('preco1').value),
-        estabelecimento: estabelecimento
+        estabelecimento: estabelecimentoId // Use o ID do estabelecimento
     };
 
     const cerveja2 = {
         marca: document.getElementById('marca2').value,
         volumen_ml: parseInt(document.getElementById('ml2').value),
         preco: parseFloat(document.getElementById('preco2').value),
-        estabelecimento: estabelecimento
+        estabelecimento: estabelecimentoId // Use o ID do estabelecimento
     };
 
     // 2. Calcular preço por litro

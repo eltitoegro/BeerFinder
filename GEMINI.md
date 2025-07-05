@@ -27,17 +27,18 @@ Este archivo resume el estado actual y las decisiones técnicas clave del proyec
 *   **`js/ui/cadastrar.js`**:
     *   Se creó el archivo `js/ui/cadastrar.js` con la lógica para el formulario de cadastro de cervejas y la funcionalidad de geolocalización.
     *   Se añadió la referencia a `js/ui/cadastrar.js` en `cadastrar.html` para habilitar la funcionalidad de cadastro de cervejas.
-*   **`js/api.js`**: Se modificó para exponer el cliente Supabase globalmente como `window.supabaseClient` y para que todas las llamadas a Supabase dentro de este archivo utilizem `window.supabaseClient`.
-*   **`js/ui/cadastrar.js` y `js/ui/estabelecimento.js`**: Se actualizaram para usar `window.supabaseClient` en lugar de `supabase` para as chamadas a Supabase.
-*   **`cadastrar.html`**: Se corrigió la carga de scripts para incluir el CDN de Supabase, `js/config.js`, y `js/api.js`, y se eliminó la referencia al mock `js/data/supabase.js` para asegurar a correta inicialização do cliente Supabase.
+    *   **Correção:** O campo `estabelecimento` foi ajustado para esperar um UUID (ID do estabelecimento) em vez do nome, buscando o ID na tabela `estabelecimentos` antes da inserção na tabela `cervejas`. Agora, permite selecionar um estabelecimento existente ou criar um novo diretamente do formulário de cadastro de cervejas.
+*   **`js/api.js`**: Se modificou para expor o cliente Supabase globalmente como `window.supabaseClient` e para que todas as chamadas a Supabase dentro deste arquivo utilizem `window.supabaseClient`.
+*   **`js/ui/cadastrar.js` e `js/ui/estabelecimento.js`**: Se atualizaram para usar `window.supabaseClient` em lugar de `supabase` para as chamadas a Supabase.
+*   **`cadastrar.html`**: Se corrigió a carga de scripts para incluir o CDN de Supabase, `js/config.js`, y `js/api.js`, y se eliminó la referencia al mock `js/data/supabase.js` para asegurar a correta inicialização do cliente Supabase.
 *   **Favicon**: Se eliminó la referencia al `favicon.ico` y se añadió un enlace a `favicon.png` en todos los archivos HTML (`index.html`, `cadastrar.html`, `comparador.html`, `estabelecimento.html`, `ranking.html`).
 
 ## Ação de Segurança Crítica: Chave Supabase Exposta
 
 **Problema:** Sua chave anônima pública do Supabase foi exposta no repositório GitHub, conforme alertado pelo GitGuardian. Embora seja uma chave pública, expô-la no control de versión no es una práctica segura.
 
-**Solución Implementada (Local):**
-*   O archivo `js/config.js` fue revertido localmente para contener sus chaves Supabase reales. **ATENÇÃO: Este archivo NÃO debe ser commitado novamente com as chaves reais.**
+**Solução Implementada (Local):**
+*   O archivo `js/config.js` foi revertido localmente para conter suas chaves Supabase reais. **ATENÇÃO: Este archivo NÃO debe ser commitado novamente com as chaves reais.**
 
 **Próximos Pasos CRÍTICOS (Ação do Usuário):**
 Para garantir a segurança e o funcionamento correto da aplicação:
@@ -59,6 +60,6 @@ Para garantir a segurança e o funcionamento correto da aplicação:
         ```
     *   **Adicione `.env` ao seu archivo `.gitignore`** para evitar que ele seja commitado acidentalmente. Se não tiver um `.gitignore`, crie um e adicione a linha `.env`.
 
-**Importante:** A partir de agora, o `js/config.js` espera que `SUPABASE_URL` e `SUPABASE_ANON_KEY` sejam fornecidos via `process.env` (variáveis de ambiente).
+**Importante:** A partir de ahora, el `js/config.js` espera que `SUPABASE_URL` y `SUPABASE_ANON_KEY` sean fornecidos via `process.env` (variáveis de ambiente).
 
-**Próximo Passo:** Disparar um novo deploy no Netlify para que as variáveis de ambiente sejam aplicadas.
+**Próximo Paso:** Disparar um novo deploy no Netlify para que as variáveis de ambiente sejam aplicadas.
