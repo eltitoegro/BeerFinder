@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultadoDiv = document.getElementById('resultado');
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
+    const marcaInput = document.getElementById('marca'); // Get marca here
+
+    console.log('Debug: marcaInput on DOMContentLoaded', marcaInput); // Log it
 
     async function populateEstabelecimentosSelect() {
         try {
@@ -52,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nomeEstabelecimento = estabelecimentoSelect.value.trim();
         }
 
-        const marca = document.getElementById('marca').value.trim();
+        const marca = marcaInput.value.trim(); // Use the already fetched element
 
         const volume1 = parseInt(document.getElementById('volume1').value);
         const preco1 = parseFloat(document.getElementById('preco1').value);
@@ -70,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
             estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
             populateEstabelecimentosSelect(); // Update the select with the new establishment if created
         } catch (error) {
-            console.error('Erro ao processar estabelecimento:', error);
-            alert('Erro ao processar estabelecimento: ' + error.message);
+            console.error('Erro ao processar establecimiento:', error);
+            alert('Erro ao processar establecimiento: ' + error.message);
             return;
         }
 
