@@ -3,34 +3,55 @@ import { getOrCreateEstabelecimento } from './utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
-    const estabelecimentoInput = document.getElementById('estabelecimento');
-    const estabelecimentosList = document.getElementById('estabelecimentosList');
+    const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
+    const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
-    async function populateEstabelecimentosDatalist() {
+    async function populateEstabelecimentosSelect() {
         try {
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
             if (error) throw error;
 
-            estabelecimentosList.innerHTML = '';
+            // Clear existing options except the first two (placeholder and add new)
+            while (estabelecimentoSelect.options.length > 2) {
+                estabelecimentoSelect.remove(2);
+            }
+
             data.forEach(estab => {
                 const option = document.createElement('option');
                 option.value = estab.nome;
-                option.dataset.id = estab.id;
-                estabelecimentosList.appendChild(option);
+                option.textContent = estab.nome;
+                estabelecimentoSelect.appendChild(option);
             });
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
         }
     }
 
-    populateEstabelecimentosDatalist();
+    populateEstabelecimentosSelect();
+
+    estabelecimentoSelect.addEventListener('change', () => {
+        if (estabelecimentoSelect.value === '_new_') {
+            newEstabelecimentoNameInput.style.display = 'block';
+            newEstabelecimentoNameInput.setAttribute('required', 'true');
+        } else {
+            newEstabelecimentoNameInput.style.display = 'none';
+            newEstabelecimentoNameInput.removeAttribute('required');
+            newEstabelecimentoNameInput.value = ''; // Clear the input if not adding new
+        }
+    });
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const nomeEstabelecimento = estabelecimentoInput.value.trim();
+        let nomeEstabelecimento = '';
+        if (estabelecimentoSelect.value === '_new_') {
+            nomeEstabelecimento = newEstabelecimentoNameInput.value.trim();
+        } else {
+            nomeEstabelecimento = estabelecimentoSelect.value.trim();
+        }
+
         const marca = document.getElementById('marca').value.trim();
 
         const volume1 = parseInt(document.getElementById('volume1').value);
@@ -47,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
-            populateEstabelecimentosDatalist(); // Update the datalist with the new establishment if created
+            populateEstabelecimentosSelect(); // Update the select with the new establishment if created
         } catch (error) {
             console.error('Erro ao processar estabelecimento:', error);
             alert('Erro ao processar estabelecimento: ' + error.message);
