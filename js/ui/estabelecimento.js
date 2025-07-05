@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             novoEstabelecimento.contato = contatoValue;
         }
 
-        const { data, error } = await supabase
+        const { data, error } = await window.supabaseClient
             .from('estabelecimentos')
             .insert([novoEstabelecimento])
             .select('*');

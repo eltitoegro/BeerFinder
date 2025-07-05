@@ -1,10 +1,11 @@
 // O script do Supabase CDN (carregado no HTML) torna o objeto `supabase` globalmente disponível.
 // Usamos o método `createClient` dele para inicializar nossa conexão.
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window.supabaseClient = supabaseClient;
 
 // Exemplo de uma função que busca dados (pode ser expandida)
 async function getEstabelecimentos() {
-    const { data, error } = await supabase
+    const { data, error } = await window.supabaseClient
         .from('estabelecimentos')
         .select('*');
 

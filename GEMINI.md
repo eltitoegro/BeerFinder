@@ -27,3 +27,38 @@ Este archivo resume el estado actual y las decisiones técnicas clave del proyec
 *   **`js/ui/cadastrar.js`**:
     *   Se creó el archivo `js/ui/cadastrar.js` con la lógica para el formulario de cadastro de cervejas y la funcionalidad de geolocalización.
     *   Se añadió la referencia a `js/ui/cadastrar.js` en `cadastrar.html` para habilitar la funcionalidad de cadastro de cervejas.
+*   **`js/api.js`**: Se modificó para exponer el cliente Supabase globalmente como `window.supabaseClient` y para que todas las llamadas a Supabase dentro de este archivo utilizem `window.supabaseClient`.
+*   **`js/ui/cadastrar.js` y `js/ui/estabelecimento.js`**: Se actualizaram para usar `window.supabaseClient` en lugar de `supabase` para as chamadas a Supabase.
+*   **`cadastrar.html`**: Se corrigió la carga de scripts para incluir el CDN de Supabase, `js/config.js`, y `js/api.js`, y se eliminó la referencia al mock `js/data/supabase.js` para asegurar a correta inicialização do cliente Supabase.
+*   **Favicon**: Se eliminó la referencia al `favicon.ico` y se añadió un enlace a `favicon.png` en todos los archivos HTML (`index.html`, `cadastrar.html`, `comparador.html`, `estabelecimento.html`, `ranking.html`).
+
+## Ação de Segurança Crítica: Chave Supabase Exposta
+
+**Problema:** Sua chave anônima pública do Supabase foi exposta no repositório GitHub, conforme alertado pelo GitGuardian. Embora seja uma chave pública, expô-la no control de versión no es una práctica segura.
+
+**Solución Implementada (Local):**
+*   O archivo `js/config.js` fue revertido localmente para contener sus chaves Supabase reales. **ATENÇÃO: Este archivo NÃO debe ser commitado novamente com as chaves reais.**
+
+**Próximos Pasos CRÍTICOS (Ação do Usuário):**
+Para garantir a segurança e o funcionamento correto da aplicação:
+
+1.  **Configurar Variáveis de Ambiente no Netlify (OBRIGATÓRIO para deploy):**
+    *   Acesse seu painel do Netlify.
+    *   Vá para as configurações do seu site (`Site settings > Build & deploy > Environment variables`).
+    *   Adicione duas novas variáveis de ambiente:
+        *   **Chave:** `SUPABASE_URL` | **Valor:** Sua URL real do Supabase.
+        *   **Chave:** `SUPABASE_ANON_KEY` | **Valor:** Sua chave anônima pública real do Supabase.
+    *   **Status:** As variáveis de ambiente foram configuradas no Netlify.
+
+2.  **Configurar para Desenvolvimento Local (Melhor Prática):**
+    *   Crie um archivo llamado `.env` na raiz do seu projeto `BeerFinder`.
+    *   Adicione as seguintes linhas, substituindo pelos seus valores reais:
+        ```
+        SUPABASE_URL=https://pyxasozwdemvqobqzgua.supabase.co
+        SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5eGFzb3p3ZGVtdnFvYnF6Z3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2Njk3MTUsImV4cCI6MjA2NzI0NTcxNX0.E5YyelQf6JERlXYU6OSH8fjshqlYjlcS8AQMOQFE8-4
+        ```
+    *   **Adicione `.env` ao seu archivo `.gitignore`** para evitar que ele seja commitado acidentalmente. Se não tiver um `.gitignore`, crie um e adicione a linha `.env`.
+
+**Importante:** A partir de agora, o `js/config.js` espera que `SUPABASE_URL` e `SUPABASE_ANON_KEY` sejam fornecidos via `process.env` (variáveis de ambiente).
+
+**Próximo Passo:** Disparar um novo deploy no Netlify para que as variáveis de ambiente sejam aplicadas.

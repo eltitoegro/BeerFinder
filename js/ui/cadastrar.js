@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             novaCerveja.localizacao = localizacaoValue;
         }
 
-        const { data, error } = await supabase
+        const { data, error } = await window.supabaseClient
             .from('cervejas')
             .insert([novaCerveja])
             .select('*'); // Select all columns after insert
