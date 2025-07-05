@@ -1,3 +1,5 @@
+import { getOrCreateEstabelecimento } from './utils.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     const estabelecimentoInput = document.getElementById('estabelecimento');
     const estabelecimentosList = document.getElementById('estabelecimentosList');
@@ -36,34 +38,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const nome = document.getElementById('estabelecimento').value;
         let estabelecimento_id = null;
 
-        // Try to find existing establishment by name
-        const { data: existente, error: errorBusca } = await window.supabaseClient
-          .from('estabelecimentos')
-          .select('id')
-          .eq('nome', nome);
-
-        if (errorBusca) { 
-          console.error('Erro ao buscar estabelecimento:', errorBusca);
-          alert('Erro ao buscar establecimiento: ' + errorBusca.message);
-          return;
+        if (!nome || nome.trim() === '') {
+            alert('O nome do estabelecimento é obrigatório.');
+            return;
         }
 
-        if (existente && existente.length > 0) {
-          estabelecimento_id = existente[0].id;
-        } else {
-          // Create new establishment if not found
-          const { data: novo, error: errorInsert } = await window.supabaseClient
-            .from('estabelecimentos')
-            .insert([{ nome }])
-            .select('id');
-
-          if (errorInsert) {
-            console.error('Erro ao criar estabelecimento:', errorInsert);
-            alert('Erro ao criar estabelecimento: ' + errorInsert.message);
+        try {
+            estabelecimento_id = await getOrCreateEstabelecimento(nome);
+            populateEstabelecimentosDatalist(); // Update the datalist with the new establishment if created
+        } catch (error) {
+            console.error('Erro ao processar estabelecimento:', error);
+            alert('Erro ao processar estabelecimento: ' + error.message);
             return;
-          }
-          estabelecimento_id = novo[0].id;
-          populateEstabelecimentosDatalist(); // Update the datalist with the new establishment
         }
 
         // Now insert the beer using the correct estabelecimento_id

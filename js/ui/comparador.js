@@ -1,3 +1,5 @@
+import { getOrCreateEstabelecimento } from './utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
@@ -37,35 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const preco2 = parseFloat(document.getElementById('preco2').value);
 
         if (!nomeEstabelecimento || !marca || !volume1 || !preco1 || !volume2 || !preco2) {
-            alert('Por favor, preencha todos os campos.');
+            alert('Por favor, preencha todos los campos.');
             return;
         }
 
         let estabelecimento_id = null;
 
         try {
-            const { data: existente, error: errorBusca } = await window.supabaseClient
-                .from('estabelecimentos')
-                .select('id')
-                .eq('nome', nomeEstabelecimento);
+            estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
+            populateEstabelecimentosDatalist(); // Update the datalist with the new establishment if created
+        } catch (error) {
+            console.error('Erro ao processar estabelecimento:', error);
+            alert('Erro ao processar estabelecimento: ' + error.message);
+            return;
+        }
 
-            if (errorBusca) {
-                throw errorBusca;
-            }
-
-            if (existente && existente.length > 0) {
-                estabelecimento_id = existente[0].id;
-            } else {
-                const { data: novo, error: errorInsert } = await window.supabaseClient
-                    .from('estabelecimentos')
-                    .insert([{ nome: nomeEstabelecimento }])
-                    .select('id');
-                if (errorInsert) throw errorInsert;
-                estabelecimento_id = novo[0].id;
-                populateEstabelecimentosDatalist();
-            }
-
-            const cervejasParaInserir = [
+        const cervejasParaInserir = [
                 { marca, volume: volume1, preco: preco1, estabelecimento_id, tipo_envase: 'comparador' },
                 { marca, volume: volume2, preco: preco2, estabelecimento_id, tipo_envase: 'comparador' }
             ];
