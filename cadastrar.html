@@ -40,28 +40,26 @@
 
                     <div class="form-group">
                         <label for="volume" class="form-label">Volume (ml)</label>
-                        <select id="volume" class="form-select" required>
-                            <option value="">Selecione o volume</option>
-                            <option value="269">269 ml (Lata palito)</option>
-                            <option value="350">350 ml (Lata)</option>
-                            <option value="473">473 ml (Latão)</option>
-                            <option value="600">600 ml (Garrafa)</option>
-                            <option value="1000">1000 ml (Litro)</option>
-                        </select>
+                        <input type="number" 
+                               id="volume" 
+                               class="form-input" 
+                               placeholder="Ex: 350, 600, 1000..."
+                               min="1"
+                               list="volumeSuggestions"
+                               required>
+                        <datalist id="volumeSuggestions">
+                            <option value="269">
+                            <option value="350">
+                            <option value="473">
+                            <option value="600">
+                            <option value="1000">
+                            <option value="330">
+                            <option value="500">
+                            <option value="750">
+                        </datalist>
                     </div>
 
-                    <div class="form-group">
-                        <label for="tipoEnvase" class="form-label">Tipo de Envase</label>
-                        <select id="tipoEnvase" class="form-select" required>
-                            <option value="">Selecione...</option>
-                            <option value="lata">Lata</option>
-                            <option value="garrafa">Garrafa</option>
-                            <option value="long_neck">Long Neck</option>
-                            <option value="garrafa_600ml">Garrafa 600ml</option>
-                            <option value="garrafa_1l">Garrafa 1L</option>
-                            <option value="barril">Barril</option>
-                        </select>
-                    </div>
+                    
 
                     <div class="form-group">
                         <label for="estabelecimentoSelect" class="form-label">Estabelecimento</label>

@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const marca = document.getElementById('marca').value;
         const preco = parseFloat(document.getElementById('preco').value);
         const volume = parseInt(document.getElementById('volume').value);
-        const tipo_envase = document.getElementById('tipoEnvase').value;
         
         let nomeEstabelecimento = '';
         if (estabelecimentoSelect.value === '_new_') {
@@ -81,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
             marca,
             preco,
             volume,
-            tipo_envase,
             estabelecimento_id
           }]);
 
