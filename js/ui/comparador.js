@@ -6,12 +6,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
+    // Initial checks for critical elements
+    if (!form) {
+        console.error('Error: Form with id "compareForm" not found.');
+        return;
+    }
+    if (!resultadoDiv) {
+        console.error('Error: Element with id "resultado" not found.');
+        return;
+    }
+    if (!estabelecimentoSelect) {
+        console.error('Error: Element with id "estabelecimentoSelect" not found.');
+        return;
+    }
+    if (!newEstabelecimentoNameInput) {
+        console.error('Error: Element with id "newEstabelecimentoName" not found.');
+        return;
+    }
+
     async function populateEstabelecimentosSelect() {
         try {
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
-            if (error) throw error;
+            
+            if (error) {
+                console.error('Error fetching establishments:', error);
+                throw error;
+            }
 
             // Clear existing options except the first two (placeholder and add new)
             while (estabelecimentoSelect.options.length > 2) {
@@ -46,14 +68,27 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Get elements inside the submit listener to ensure they are available
-        const marca = document.getElementById('marca').value.trim();
-        const volume1 = parseInt(document.getElementById('volume1').value);
-        const preco1 = parseFloat(document.getElementById('preco1').value);
-        const volume2 = parseInt(document.getElementById('volume2').value);
-        const preco2 = parseFloat(document.getElementById('preco2').value);
+        const marcaInput = document.getElementById('marca');
+        const volume1Input = document.getElementById('volume1');
+        const preco1Input = document.getElementById('preco1');
+        const volume2Input = document.getElementById('volume2');
+        const preco2Input = document.getElementById('preco2');
 
-        if (!estabelecimentoSelect || !marca || !volume1 || !preco1 || !volume2 || !preco2) {
-            alert('Por favor, preencha todos os campos.');
+        // Check if all necessary inputs exist
+        if (!marcaInput || !volume1Input || !preco1Input || !volume2Input || !preco2Input) {
+            console.error('Error: One or more required input elements are missing.');
+            alert('Error interno: Faltan elementos del formulario. Por favor, recargue la página.');
+            return;
+        }
+
+        const marca = marcaInput.value.trim();
+        const volume1 = parseInt(volume1Input.value);
+        const preco1 = parseFloat(preco1Input.value);
+        const volume2 = parseInt(volume2Input.value);
+        const preco2 = parseFloat(preco2Input.value);
+
+        if (!marca || isNaN(volume1) || isNaN(preco1) || isNaN(volume2) || isNaN(preco2)) {
+            alert('Por favor, preencha todos os campos corretamente.');
             return;
         }
 
@@ -99,6 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultadoHTML = `<h2>A Opção 1 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl2 - precoPorMl1).toFixed(4)} por ml.</p>`;
             } else if (precoPorMl2 < precoPorMl1) {
                 resultadoHTML = `<h2>A Opção 2 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl1 - precoPorMl2).toFixed(4)} por ml.</p>`;
+            } else {
+                resultadoHTML = `<h2>Ambas as opções têm o mesmo preço por ml.</h2>`;
             }
 
             resultadoDiv.innerHTML = resultadoHTML;
