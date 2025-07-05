@@ -15,7 +15,7 @@ async function salvarCerveja(cerveja) {
         const { data, error } = await window.supabaseClient
             .from('cervejas')
             .insert([cerveja])
-            .select();
+            .select('*');
 
         if (error) {
             // Se houver um erro de violação de chave única (duplicado), não tratamos como um erro fatal
