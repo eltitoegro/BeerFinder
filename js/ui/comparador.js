@@ -6,25 +6,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
-    // Debugging: Check if elements are found
-    if (!estabelecimentoSelect) console.error('Error: #estabelecimentoSelect not found.');
-    if (!newEstabelecimentoNameInput) console.error('Error: #newEstabelecimentoName not found.');
-
     async function populateEstabelecimentosSelect() {
-        console.log('Debug: populateEstabelecimentosSelect called');
-        if (!estabelecimentoSelect) {
-            console.error('populateEstabelecimentosSelect: #estabelecimentoSelect is null. Cannot populate.');
-            return;
-        }
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('estabelecimentos')
+                .select('id, nome');
+            if (error) throw error;
 
+            // Clear existing options except the first two (placeholder and add new)
+            while (estabelecimentoSelect.options.length > 2) {
+                estabelecimentoSelect.remove(2);
+            }
+
+            data.forEach(estab => {
+                const option = document.createElement('option');
+                option.value = estab.nome;
+                option.textContent = estab.nome;
+                estabelecimentoSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar estabelecimentos:', error);
+        }
+    }
 
     populateEstabelecimentosSelect();
 
     estabelecimentoSelect.addEventListener('change', () => {
-        if (!estabelecimentoSelect || !newEstabelecimentoNameInput) {
-            console.error('Error: establishment select or new establishment input is null.');
-            return;
-        }
         if (estabelecimentoSelect.value === '_new_') {
             newEstabelecimentoNameInput.style.display = 'block';
             newEstabelecimentoNameInput.setAttribute('required', 'true');
@@ -39,22 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Get elements inside the submit listener to ensure they are available
-        let marca;
-        try {
-            const marcaElement = document.getElementById('marca');
-            console.assert(marcaElement, 'Assertion Failed: Element #marca is null!');
-            if (!marcaElement) {
-                console.error('Critical Error: Element #marca is null. Cannot proceed.');
-                alert('Error crítico: El campo de marca no se encontró. Por favor, recargue la página.');
-                return;
-            }
-            marca = marcaElement.value.trim();
-        } catch (e) {
-            console.error('Error accessing marca element:', e);
-            alert('Error al acceder al campo de marca. Por favor, recargue la página.');
-            return;
-        }
-
+        const marca = document.getElementById('marca').value.trim();
         const volume1 = parseInt(document.getElementById('volume1').value);
         const preco1 = parseFloat(document.getElementById('preco1').value);
         const volume2 = parseInt(document.getElementById('volume2').value);
@@ -62,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!estabelecimentoSelect || !marca || !volume1 || !preco1 || !volume2 || !preco2) {
             console.error('Error: One or more form elements are null or empty. Cannot submit.');
-            alert('Error interno: Faltan elementos del formulario o campos obligatorios. Por favor, recargue la página.');
+            alert('Por favor, preencha todos os campos.');
             return;
         }
 
