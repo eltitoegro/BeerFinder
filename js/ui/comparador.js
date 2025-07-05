@@ -1,4 +1,4 @@
-import { getOrCreateEstabelecimento } from './utils.js';
+import { getOrCreateEstabelecimento } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('compareForm');
