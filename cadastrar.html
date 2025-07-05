@@ -40,12 +40,14 @@
 
                     <div class="form-group">
                         <label for="volume" class="form-label">Volume (ml)</label>
-                        <input type="number" 
-                               id="volume" 
-                               class="form-input" 
-                               placeholder="Ex: 350, 600, 1000..."
-                               min="1"
-                               required>
+                        <select id="volume" class="form-select" required>
+                            <option value="">Selecione o volume</option>
+                            <option value="269">269 ml (Lata palito)</option>
+                            <option value="350">350 ml (Lata)</option>
+                            <option value="473">473 ml (Latão)</option>
+                            <option value="600">600 ml (Garrafa)</option>
+                            <option value="1000">1000 ml (Litro)</option>
+                        </select>
                     </div>
 
                     <div class="form-group">

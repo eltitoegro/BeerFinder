@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 .eq('nome', nomeEstabelecimento)
                 .single();
 
-            if (errorBusca && errorBusca.code !== 'PGRST116') throw errorBusca;
+            if (errorBusca && errorBusca.code !== 'PGRST116') {
+                throw errorBusca;
+            }
 
             if (existente) {
                 estabelecimento_id = existente.id;
