@@ -1,249 +1,100 @@
-// Comparador de Cervejas - BeerFinder
-// Francisco - Praia do Rosa, SC
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('compareForm');
+    const resultadoDiv = document.getElementById('resultado');
+    const estabelecimentoInput = document.getElementById('estabelecimento');
+    const estabelecimentosList = document.getElementById('estabelecimentosList');
 
-const ComparadorUI = {
-    // Elementos da interface
-    searchInput: null,
-    beerTable: null,
-    beerTableBody: null,
-    emptyState: null,
-    
-    // Dados carregados
-    cervejasData: [],
-    cervejasFiltered: [],
-    
-    // Inicialização
-    init() {
-        this.setupElements();
-        this.setupEventListeners();
-        this.loadData();
-    },
-    
-    setupElements() {
-        this.searchInput = document.getElementById('searchInput');
-        this.beerTable = document.getElementById('beerTable');
-        this.beerTableBody = document.getElementById('beerTableBody');
-        this.emptyState = document.getElementById('emptyState');
-    },
-    
-    setupEventListeners() {
-        // Busca em tempo real
-        this.searchInput.addEventListener('input', (e) => {
-            this.filterData(e.target.value);
-        });
-        
-        // Limpar busca com ESC
-        this.searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                e.target.value = '';
-                this.filterData('');
-            }
-        });
-        
-        // Ordenação por colunas
-        this.setupColumnSorting();
-    },
-    
-    setupColumnSorting() {
-        const headers = this.beerTable.querySelectorAll('th');
-        headers.forEach((header, index) => {
-            header.style.cursor = 'pointer';
-            header.addEventListener('click', () => {
-                this.sortByColumn(index);
-            });
-        });
-    },
-    
-    // Carregar dados
-    async loadData() {
+    async function populateEstabelecimentosDatalist() {
         try {
-            this.showLoading();
-            
-            // Buscar cervejas usando o DataHelper
-            this.cervejasData = await DataHelper.searchCervejas();
-            this.cervejasFiltered = [...this.cervejasData];
-            
-            this.renderTable();
-            this.hideLoading();
-            
+            const { data, error } = await window.supabaseClient
+                .from('estabelecimentos')
+                .select('id, nome');
+            if (error) throw error;
+
+            estabelecimentosList.innerHTML = '';
+            data.forEach(estab => {
+                const option = document.createElement('option');
+                option.value = estab.nome;
+                option.dataset.id = estab.id;
+                estabelecimentosList.appendChild(option);
+            });
         } catch (error) {
-            console.error('Erro ao carregar dados:', error);
-            this.showError('Erro ao carregar dados. Tente novamente.');
+            console.error('Erro ao carregar estabelecimentos:', error);
         }
-    },
-    
-    // Filtrar dados
-    filterData(searchTerm) {
-        if (!searchTerm.trim()) {
-            this.cervejasFiltered = [...this.cervejasData];
-        } else {
-            this.cervejasFiltered = this.cervejasData.filter(cerveja => 
-                cerveja.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                cerveja.tipo_envase.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                cerveja.estabelecimento.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-        
-        this.renderTable();
-    },
-    
-    // Ordenar por coluna
-    sortByColumn(columnIndex) {
-        const columnMappings = ['marca', 'preco', 'volume', 'preco_por_litro', 'estabelecimento'];
-        const column = columnMappings[columnIndex];
-        
-        if (!column) return;
-        
-        // Alternar direção da ordenação
-        const isAscending = this.currentSort?.column === column && this.currentSort?.direction === 'asc';
-        const direction = isAscending ? 'desc' : 'asc';
-        
-        this.cervejasFiltered.sort((a, b) => {
-            let aVal = a[column];
-            let bVal = b[column];
-            
-            // Converter para números quando apropriado
-            if (column === 'preco' || column === 'volume' || column === 'preco_por_litro') {
-                aVal = parseFloat(aVal);
-                bVal = parseFloat(bVal);
-            }
-            
-            if (direction === 'asc') {
-                return aVal > bVal ? 1 : -1;
-            } else {
-                return bVal > aVal ? 1 : -1;
-            }
-        });
-        
-        this.currentSort = { column, direction };
-        this.renderTable();
-        this.updateColumnHeaders(columnIndex, direction);
-    },
-    
-    // Atualizar cabeçalhos com indicador de ordenação
-    updateColumnHeaders(activeIndex, direction) {
-        const headers = this.beerTable.querySelectorAll('th');
-        headers.forEach((header, index) => {
-            header.textContent = header.textContent.replace(/[↑↓]/g, '');
-            
-            if (index === activeIndex) {
-                header.textContent += direction === 'asc' ? ' ↑' : ' ↓';
-            }
-        });
-    },
-    
-    // Renderizar tabela
-    renderTable() {
-        if (this.cervejasFiltered.length === 0) {
-            this.showEmptyState();
+    }
+
+    populateEstabelecimentosDatalist();
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const nomeEstabelecimento = estabelecimentoInput.value.trim();
+        const marca = document.getElementById('marca').value.trim();
+
+        const volume1 = parseInt(document.getElementById('volume1').value);
+        const preco1 = parseFloat(document.getElementById('preco1').value);
+        const volume2 = parseInt(document.getElementById('volume2').value);
+        const preco2 = parseFloat(document.getElementById('preco2').value);
+
+        if (!nomeEstabelecimento || !marca || !volume1 || !preco1 || !volume2 || !preco2) {
+            alert('Por favor, preencha todos os campos.');
             return;
         }
-        
-        this.hideEmptyState();
-        
-        const rows = this.cervejasFiltered.map(cerveja => this.createTableRow(cerveja));
-        this.beerTableBody.innerHTML = rows.join('');
-    },
-    
-    // Criar linha da tabela
-    createTableRow(cerveja) {
-        const precoFormatado = BeerFinder.formatPrice(cerveja.preco);
-        const precoPorLitroFormatado = BeerFinder.formatPrice(cerveja.preco_por_litro);
-        
-        // Determinar badge do preço
-        const priceBadge = this.getPriceBadge(parseFloat(cerveja.preco_por_litro));
-        
-        return `
-            <tr>
-                <td>
-                    <strong>${cerveja.marca}</strong>
-                    <br>
-                    <small style="color: #666;">${this.formatTipoEnvase(cerveja.tipo_envase)}</small>
-                </td>
-                <td>
-                    <strong>${precoFormatado}</strong>
-                </td>
-                <td>${cerveja.volume}ml</td>
-                <td>
-                    <span class="price-badge ${priceBadge.class}">
-                        ${precoPorLitroFormatado}
-                    </span>
-                </td>
-                <td>
-                    <strong>${cerveja.estabelecimento}</strong>
-                    <br>
-                    <small style="color: #666;">${cerveja.localizacao}</small>
-                </td>
-            </tr>
-        `;
-    },
-    
-    // Determinar badge de preço
-    getPriceBadge(precoPorLitro) {
-        if (precoPorLitro < 8) {
-            return { class: 'price-best', text: 'Melhor' };
-        } else if (precoPorLitro < 12) {
-            return { class: 'price-regular', text: 'Normal' };
-        } else {
-            return { class: 'price-high', text: 'Caro' };
-        }
-    },
-    
-    // Formatar tipo de envase
-    formatTipoEnvase(tipo) {
-        const tipos = {
-            'lata': 'Lata',
-            'garrafa': 'Garrafa',
-            'long_neck': 'Long Neck',
-            'garrafa_600ml': 'Garrafa 600ml',
-            'garrafa_1l': 'Garrafa 1L',
-            'barril': 'Barril'
-        };
-        
-        return tipos[tipo] || tipo;
-    },
-    
-    // Estados da interface
-    showLoading() {
-        this.beerTableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center" style="padding: 40px;">
-                    <div style="font-size: 1.2rem; color: #666;">
-                        🔄 Carregando cervejas...
-                    </div>
-                </td>
-            </tr>
-        `;
-    },
-    
-    hideLoading() {
-        // Implementado no renderTable
-    },
-    
-    showEmptyState() {
-        this.beerTable.classList.add('hidden');
-        this.emptyState.classList.remove('hidden');
-    },
-    
-    hideEmptyState() {
-        this.beerTable.classList.remove('hidden');
-        this.emptyState.classList.add('hidden');
-    },
-    
-    showError(message) {
-        this.beerTableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center" style="padding: 40px;">
-                    <div style="font-size: 1.2rem; color: #dc3545;">
-                        ⚠️ ${message}
-                    </div>
-                </td>
-            </tr>
-        `;
-    }
-};
 
-// Inicializar quando a página carregar
-document.addEventListener('DOMContentLoaded', () => {
-    ComparadorUI.init();
+        let estabelecimento_id = null;
+
+        try {
+            const { data: existente, error: errorBusca } = await window.supabaseClient
+                .from('estabelecimentos')
+                .select('id')
+                .eq('nome', nomeEstabelecimento)
+                .single();
+
+            if (errorBusca && errorBusca.code !== 'PGRST116') throw errorBusca;
+
+            if (existente) {
+                estabelecimento_id = existente.id;
+            } else {
+                const { data: novo, error: errorInsert } = await window.supabaseClient
+                    .from('estabelecimentos')
+                    .insert([{ nome: nomeEstabelecimento }])
+                    .select('id')
+                    .single();
+                if (errorInsert) throw errorInsert;
+                estabelecimento_id = novo.id;
+                populateEstabelecimentosDatalist();
+            }
+
+            const cervejasParaInserir = [
+                { marca, volume: volume1, preco: preco1, estabelecimento_id, tipo_envase: 'comparador' },
+                { marca, volume: volume2, preco: preco2, estabelecimento_id, tipo_envase: 'comparador' }
+            ];
+
+            const { error: errorCerveja } = await window.supabaseClient
+                .from('cervejas')
+                .insert(cervejasParaInserir);
+
+            if (errorCerveja) throw errorCerveja;
+
+            const precoPorMl1 = preco1 / volume1;
+            const precoPorMl2 = preco2 / volume2;
+
+            let resultadoHTML = '';
+            if (precoPorMl1 < precoPorMl2) {
+                resultadoHTML = `<h2>A Opção 1 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl2 - precoPorMl1).toFixed(4)} por ml.</p>`;
+            } else if (precoPorMl2 < precoPorMl1) {
+                resultadoHTML = `<h2>A Opção 2 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl1 - precoPorMl2).toFixed(4)} por ml.</p>`;
+            } else {
+                resultadoHTML = `<h2>Ambas as opções têm o mesmo preço por ml.</h2>`;
+            }
+
+            resultadoDiv.innerHTML = resultadoHTML;
+            resultadoDiv.classList.remove('hidden');
+            alert('Comparação salva com sucesso!');
+
+        } catch (error) {
+            console.error('Erro no processo de comparação:', error);
+            alert(`Ocorreu um erro: ${error.message}`);
+        }
+    });
 });
