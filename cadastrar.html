@@ -64,14 +64,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="estabelecimento" class="form-label">Estabelecimento</label>
-                        <input type="text" 
-                               id="estabelecimento" 
-                               class="form-input" 
-                               placeholder="Ex: Mercado do João, Padaria Central..."
-                               list="estabelecimentosList"
-                               required>
-                        <datalist id="estabelecimentosList"></datalist>
+                        <label for="estabelecimentoSelect" class="form-label">Estabelecimento</label>
+                        <select id="estabelecimentoSelect" class="form-select" required>
+                            <option value="">Selecione um estabelecimento</option>
+                            <option value="_new_">Adicionar novo estabelecimento</option>
+                        </select>
+                        <input type="text" id="newEstabelecimentoName" class="form-input" placeholder="Nome do novo estabelecimento" style="display:none; margin-top: 10px;">
                     </div>
 
                     <div class="form-group">

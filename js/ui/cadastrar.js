@@ -1,11 +1,11 @@
 import { getOrCreateEstabelecimento } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
-    const estabelecimentoInput = document.getElementById('estabelecimento');
-    const estabelecimentosList = document.getElementById('estabelecimentosList');
+    const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
+    const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
-    // Function to fetch and populate establishments datalist
-    async function populateEstabelecimentosDatalist() {
+    // Function to fetch and populate establishments select
+    async function populateEstabelecimentosSelect() {
         try {
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
@@ -13,20 +13,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            estabelecimentosList.innerHTML = ''; // Clear previous options
+            // Clear existing options except the first two (placeholder and add new)
+            while (estabelecimentoSelect.options.length > 2) {
+                estabelecimentoSelect.remove(2);
+            }
+
             data.forEach(estab => {
                 const option = document.createElement('option');
                 option.value = estab.nome;
-                option.dataset.id = estab.id; // Store the ID for later use
-                estabelecimentosList.appendChild(option);
+                option.textContent = estab.nome;
+                estabelecimentoSelect.appendChild(option);
             });
         } catch (error) {
-            console.error('Erro ao carregar estabelecimentos para o datalist:', error);
+            console.error('Erro ao carregar estabelecimentos:', error);
         }
     }
 
-    // Populate datalist on page load
-    populateEstabelecimentosDatalist();
+    // Populate select on page load
+    populateEstabelecimentosSelect();
+
+    estabelecimentoSelect.addEventListener('change', () => {
+        if (estabelecimentoSelect.value === '_new_') {
+            newEstabelecimentoNameInput.style.display = 'block';
+            newEstabelecimentoNameInput.setAttribute('required', 'true');
+        } else {
+            newEstabelecimentoNameInput.style.display = 'none';
+            newEstabelecimentoNameInput.removeAttribute('required');
+            newEstabelecimentoNameInput.value = ''; // Clear the input if not adding new
+        }
+    });
 
     document.getElementById('beerForm').addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -35,17 +50,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const preco = parseFloat(document.getElementById('preco').value);
         const volume = parseInt(document.getElementById('volume').value);
         const tipo_envase = document.getElementById('tipoEnvase').value;
-        const nome = document.getElementById('estabelecimento').value;
+        
+        let nomeEstabelecimento = '';
+        if (estabelecimentoSelect.value === '_new_') {
+            nomeEstabelecimento = newEstabelecimentoNameInput.value.trim();
+        } else {
+            nomeEstabelecimento = estabelecimentoSelect.value.trim();
+        }
+
         let estabelecimento_id = null;
 
-        if (!nome || nome.trim() === '') {
+        if (!nomeEstabelecimento || nomeEstabelecimento.trim() === '') {
             alert('O nome do estabelecimento é obrigatório.');
             return;
         }
 
         try {
-            estabelecimento_id = await getOrCreateEstabelecimento(nome);
-            populateEstabelecimentosDatalist(); // Update the datalist with the new establishment if created
+            estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
+            populateEstabelecimentosSelect(); // Update the select with the new establishment if created
         } catch (error) {
             console.error('Erro ao processar estabelecimento:', error);
             alert('Erro ao processar estabelecimento: ' + error.message);
