@@ -47,15 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: existente, error: errorBusca } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id')
-                .eq('nome', nomeEstabelecimento)
-                .single();
+                .eq('nome', nomeEstabelecimento);
 
-            if (errorBusca && errorBusca.code !== 'PGRST116') {
+            if (errorBusca) {
                 throw errorBusca;
             }
 
-            if (existente) {
-                estabelecimento_id = existente.id;
+            if (existente && existente.length > 0) {
+                estabelecimento_id = existente[0].id;
             } else {
                 const { data: novo, error: errorInsert } = await window.supabaseClient
                     .from('estabelecimentos')

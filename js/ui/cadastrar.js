@@ -40,31 +40,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const { data: existente, error: errorBusca } = await window.supabaseClient
           .from('estabelecimentos')
           .select('id')
-          .eq('nome', nome)
-          .single();
+          .eq('nome', nome);
 
-        if (errorBusca && errorBusca.code != 'PGRST116') { // PGRST116 means no rows found, which is not an error here
+        if (errorBusca) { 
           console.error('Erro ao buscar estabelecimento:', errorBusca);
-          alert('Erro ao buscar estabelecimento: ' + errorBusca.message);
+          alert('Erro ao buscar establecimiento: ' + errorBusca.message);
           return;
         }
 
-        if (existente) {
-          estabelecimento_id = existente.id;
+        if (existente && existente.length > 0) {
+          estabelecimento_id = existente[0].id;
         } else {
           // Create new establishment if not found
           const { data: novo, error: errorInsert } = await window.supabaseClient
             .from('estabelecimentos')
             .insert([{ nome }])
-            .select('id')
-            .single();
+            .select('id');
 
           if (errorInsert) {
             console.error('Erro ao criar estabelecimento:', errorInsert);
             alert('Erro ao criar estabelecimento: ' + errorInsert.message);
             return;
           }
-          estabelecimento_id = novo.id;
+          estabelecimento_id = novo[0].id;
           populateEstabelecimentosDatalist(); // Update the datalist with the new establishment
         }
 
