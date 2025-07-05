@@ -10,11 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Debug: marcaInput on DOMContentLoaded', marcaInput); // Log it
 
     async function populateEstabelecimentosSelect() {
+        console.log('Debug: populateEstabelecimentosSelect called');
         try {
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
-            if (error) throw error;
+            
+            if (error) {
+                console.error('Debug: Error fetching establishments:', error);
+                throw error;
+            }
+            console.log('Debug: Establishments fetched:', data);
 
             // Clear existing options except the first two (placeholder and add new)
             while (estabelecimentoSelect.options.length > 2) {
@@ -27,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = estab.nome;
                 estabelecimentoSelect.appendChild(option);
             });
+            console.log('Debug: Establishments select populated.');
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
         }
@@ -70,7 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let estabelecimento_id = null;
 
         try {
+            console.log('Debug: Calling getOrCreateEstabelecimento with:', nomeEstabelecimento);
             estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
+            console.log('Debug: Received estabelecimento_id:', estabelecimento_id);
             populateEstabelecimentosSelect(); // Update the select with the new establishment if created
         } catch (error) {
             console.error('Erro ao processar establecimiento:', error);
