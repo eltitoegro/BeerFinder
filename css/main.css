@@ -52,7 +52,7 @@ input[type="text"], input[type="number"], select {
     box-sizing: border-box;
 }
 
-/* --- Botões --- */
+/* --- Botones --- */
 .btn {
     display: inline-block;
     padding: 15px 20px;
@@ -74,6 +74,31 @@ input[type="text"], input[type="number"], select {
 .btn-primary:hover {
     background-color: #e0a800;
     transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: #28a745; /* Verde para éxito */
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-back {
+    background-color: #6c757d; /* Gris para volver */
+    color: #fff;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-full {
+    width: 100%;
+    display: block;
 }
 
 /* --- Layout --- */
