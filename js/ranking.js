@@ -12,17 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate beer select options
     async function populateBeerSelect() {
+        console.log('Debug: populateBeerSelect called.');
         try {
             const { data, error } = await window.supabaseClient
                 .from('cervejas')
                 .select('marca, volume');
 
-            if (error) throw error;
+            if (error) {
+                console.error('Debug: Error fetching cervejas for select population:', error);
+                throw error;
+            }
+            console.log('Debug: Cervejas data fetched for select:', data);
 
             const uniqueBeers = new Set();
             data.forEach(beer => {
                 uniqueBeers.add(`${beer.marca} ${beer.volume}ml`);
             });
+            console.log('Debug: Unique beers generated:', uniqueBeers);
 
             // Clear existing options except the first one (placeholder)
             while (beerSelect.options.length > 1) {
@@ -35,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = beer;
                 beerSelect.appendChild(option);
             });
+            console.log('Debug: Beer select populated.');
         } catch (error) {
             console.error('Erro ao carregar opções de cerveja:', error);
         }
