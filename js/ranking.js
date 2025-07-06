@@ -1,4 +1,4 @@
-import { supabase } from './api.js'; // Assuming api.js exports supabase client
+// import { supabase } from './api.js'; // Assuming api.js exports supabase client
 
 document.addEventListener('DOMContentLoaded', () => {
     const beerSelect = document.getElementById('beerSelect');
@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
             data.forEach(beer => {
                 uniqueBeers.add(`${beer.marca} ${beer.volume}ml`);
             });
+
+            // Clear existing options except the first one (placeholder)
+            while (beerSelect.options.length > 1) {
+                beerSelect.remove(1);
+            }
 
             uniqueBeers.forEach(beer => {
                 const option = document.createElement('option');
