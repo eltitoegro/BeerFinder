@@ -1,8 +1,16 @@
 /* Estilos Globais - Foco Mobile-First */
+:root {
+    --color-orange-vibrant: #FF6B00;
+    --color-green-vibrant: #00B894;
+    --color-brown-beer: #5C3A21;
+    --color-cream-soft: #FDF5E6;
+    --color-gray-dark: #4A4A4A;
+}
+
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f0f2f5; /* Um cinza mais suave */
-    color: #333;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-cream-soft);
+    color: var(--color-brown-beer);
     margin: 0;
     padding: 0;
 }
@@ -17,23 +25,31 @@ body {
 
 /* --- Hierarquia de Texto --- */
 h1, h2, h3 {
+    font-family: 'Oswald', sans-serif;
     margin: 0 0 15px 0;
     font-weight: 700;
+    color: var(--color-brown-beer);
 }
 
 h1 {
-    font-size: 2.2em; /* Título principal bem grande */
-    color: #1c1e21;
+    font-size: 2.8em; /* Título principal bien grande */
+    color: var(--color-orange-vibrant); /* Título principal en naranja vibrante */
 }
 
 h2 {
-    font-size: 1.8em;
-    color: #333;
+    font-size: 2.2em;
 }
 
 p {
     line-height: 1.6;
     margin: 0 0 10px 0;
+    color: var(--color-brown-beer);
+}
+
+.tagline {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    color: var(--color-gray-dark);
 }
 
 /* --- Elementos de Formulário --- */
@@ -43,13 +59,15 @@ form {
     gap: 15px;
 }
 
-input[type="text"], input[type="number"], select {
+input[type="text"], input[type="number"], select, textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1em;
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    color: var(--color-brown-beer);
 }
 
 /* --- Botones --- */
@@ -67,31 +85,41 @@ input[type="text"], input[type="number"], select {
 }
 
 .btn-primary {
-    background-color: #ffc107; /* Amarelo cerveja */
-    color: #000;
+    background-color: var(--color-orange-vibrant);
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #e0a800;
+    background-color: #e05a00;
     transform: translateY(-2px);
 }
 
 .btn-success {
-    background-color: #28a745; /* Verde para éxito */
+    background-color: var(--color-green-vibrant);
     color: #fff;
 }
 
 .btn-success:hover {
-    background-color: #218838;
+    background-color: #00a384;
     transform: translateY(-2px);
 }
 
 .btn-back {
-    background-color: #6c757d; /* Gris para volver */
+    background-color: var(--color-gray-dark);
     color: #fff;
 }
 
 .btn-back:hover {
+    background-color: #3a3a3a;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Mantener un gris para botones secundarios */
+    color: #fff;
+}
+
+.btn-secondary:hover {
     background-color: #5a6268;
     transform: translateY(-2px);
 }
@@ -109,6 +137,6 @@ input[type="text"], input[type="number"], select {
 
 .footer {
     margin-top: 30px;
-    color: #888;
+    color: var(--color-gray-dark);
     font-size: 0.9em;
 }
