@@ -1,8 +1,8 @@
 import { supabase } from './api.js'; // Assuming api.js exports supabase client
 
 document.addEventListener('DOMContentLoaded', () => {
-    const beerFilterInput = document.getElementById('beerFilter');
-    const beerSuggestionsDatalist = document.getElementById('beerSuggestions');
+    const beerSelect = document.getElementById('beerSelect');
+    const searchBeerBtn = document.getElementById('searchBeerBtn');
     const rankingResultsDiv = document.getElementById('rankingResults');
 
     // Function to format price
@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}`;
     };
 
-    // Populate beer suggestions datalist
-    async function populateBeerSuggestions() {
+    // Populate beer select options
+    async function populateBeerSelect() {
         try {
             const { data, error } = await window.supabaseClient
                 .from('cervejas')
@@ -24,26 +24,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 uniqueBeers.add(`${beer.marca} ${beer.volume}ml`);
             });
 
-            beerSuggestionsDatalist.innerHTML = '';
             uniqueBeers.forEach(beer => {
                 const option = document.createElement('option');
                 option.value = beer;
-                beerSuggestionsDatalist.appendChild(option);
+                option.textContent = beer;
+                beerSelect.appendChild(option);
             });
         } catch (error) {
-            console.error('Erro ao carregar sugestões de cerveja:', error);
+            console.error('Erro ao carregar opções de cerveja:', error);
         }
     }
 
     // Fetch and display ranking for selected beer
-    async function fetchAndDisplayRanking(searchTerm) {
+    async function fetchAndDisplayRanking() {
+        const searchTerm = beerSelect.value;
+        if (!searchTerm) {
+            rankingResultsDiv.innerHTML = '<p class="empty-state">Selecione uma cerveja para ver o ranking de preços.</p>';
+            return;
+        }
+
         rankingResultsDiv.innerHTML = '<p class="empty-state">Carregando ranking...</p>';
 
         const [marca, volumeStr] = searchTerm.split(' ');
         const volume = parseInt(volumeStr);
 
         if (!marca || isNaN(volume)) {
-            rankingResultsDiv.innerHTML = '<p class="empty-state">Formato de busca inválido. Use "Marca VolumeML" (ex: Heineken 350ml).</p>';
+            rankingResultsDiv.innerHTML = '<p class="empty-state">Formato de busca inválido. Selecione uma opção válida.</p>';
             return;
         }
 
@@ -90,11 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event listener for filter input
-    beerFilterInput.addEventListener('change', (event) => {
-        fetchAndDisplayRanking(event.target.value);
-    });
+    // Event listener for search button click
+    searchBeerBtn.addEventListener('click', fetchAndDisplayRanking);
 
-    // Initial population of suggestions
-    populateBeerSuggestions();
+    // Initial population of select options
+    populateBeerSelect();
 });

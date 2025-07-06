@@ -51,9 +51,11 @@
                 <p>Encontre o melhor preço para sua cerveja favorita.</p>
 
                 <div class="filter-group">
-                    <label for="beerFilter">Buscar Cerveja:</label>
-                    <input type="text" id="beerFilter" list="beerSuggestions" placeholder="Ex: Heineken 350ml">
-                    <datalist id="beerSuggestions"></datalist>
+                    <label for="beerSelect">Buscar Cerveja:</label>
+                    <select id="beerSelect">
+                        <option value="">Selecione uma cerveja</option>
+                    </select>
+                    <button type="button" id="searchBeerBtn" class="btn btn-primary" style="margin-top: 10px;">Buscar</button>
                 </div>
 
                 <div id="rankingResults" class="ranking-results">
