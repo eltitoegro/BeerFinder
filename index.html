@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/ranking.css">
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
@@ -44,6 +45,22 @@
                     <span class="btn-desc">Veja onde ficam os melhores preços</span>
                 </a>
             </div>
+
+            <section class="ranking-section">
+                <h2>Ranking da Cerveja Mais Barata</h2>
+                <p>Encontre o melhor preço para sua cerveja favorita.</p>
+
+                <div class="filter-group">
+                    <label for="beerFilter">Buscar Cerveja:</label>
+                    <input type="text" id="beerFilter" list="beerSuggestions" placeholder="Ex: Heineken 350ml">
+                    <datalist id="beerSuggestions"></datalist>
+                </div>
+
+                <div id="rankingResults" class="ranking-results">
+                    <!-- Ranking results will be loaded here -->
+                    <p class="empty-state">Selecione uma cerveja para ver o ranking de preços.</p>
+                </div>
+            </section>
         </main>
 
         <footer class="footer">
@@ -51,5 +68,6 @@
             <p class="version">v1.0 - MVP</p>
         </footer>
     </div>
+    <script type="module" src="js/ranking.js"></script>
 </body>
 </html>
