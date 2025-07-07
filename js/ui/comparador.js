@@ -1,86 +1,77 @@
-import { getOrCreateEstabelecimento } from '../utils.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
-    const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
-    const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
+    const estabelecimentoInput = document.getElementById('estabelecimentoInput');
+    const estabelecimentoList = document.getElementById('estabelecimentoList');
 
-    async function populateEstabelecimentosSelect() {
+    async function getOrCreateEstabelecimento(nome) {
+        const { data: existente, error: errorBusca } = await window.supabaseClient
+            .from('estabelecimentos')
+            .select('id')
+            .eq('nome', nome)
+            .single();
+
+        if (errorBusca && errorBusca.code !== 'PGRST116') { // PGRST116 = no rows returned
+            throw errorBusca;
+        }
+
+        if (existente) {
+            return existente.id;
+        } else {
+            const { data: novo, error: errorInsert } = await window.supabaseClient
+                .from('estabelecimentos')
+                .insert([{ nome }])
+                .select('id')
+                .single();
+
+            if (errorInsert) {
+                throw errorInsert;
+            }
+            return novo.id;
+        }
+    }
+
+    async function populateEstabelecimentosDatalist() {
         try {
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
             if (error) throw error;
 
-            // Clear existing options except the first two (placeholder and add new)
-            while (estabelecimentoSelect.options.length > 2) {
-                estabelecimentoSelect.remove(2);
-            }
+            estabelecimentoList.innerHTML = '';
 
             data.forEach(estab => {
                 const option = document.createElement('option');
                 option.value = estab.nome;
-                option.textContent = estab.nome;
-                estabelecimentoSelect.appendChild(option);
+                estabelecimentoList.appendChild(option);
             });
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
+            alert('Não foi possível carregar a lista de estabelecimentos. Verifique a conexão e tente recarregar a página.');
         }
     }
 
-    populateEstabelecimentosSelect();
-
-    estabelecimentoSelect.addEventListener('change', () => {
-        if (estabelecimentoSelect.value === '_new_') {
-            newEstabelecimentoNameInput.style.display = 'block';
-            newEstabelecimentoNameInput.setAttribute('required', 'true');
-        } else {
-            newEstabelecimentoNameInput.style.display = 'none';
-            newEstabelecimentoNameInput.removeAttribute('required');
-            newEstabelecimentoNameInput.value = ''; // Clear the input if not adding new
-        }
-    });
+    populateEstabelecimentosDatalist();
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Get elements inside the submit listener to ensure they are available
+        const nomeEstabelecimento = estabelecimentoInput.value.trim();
         const marca = document.getElementById('marca').value.trim();
         const volume1 = parseInt(document.getElementById('volume1').value);
         const preco1 = parseFloat(document.getElementById('preco1').value);
         const volume2 = parseInt(document.getElementById('volume2').value);
         const preco2 = parseFloat(document.getElementById('preco2').value);
 
-        if (!estabelecimentoSelect || !marca || isNaN(volume1) || isNaN(preco1) || isNaN(volume2) || isNaN(preco2)) {
+        if (!nomeEstabelecimento || !marca || isNaN(volume1) || isNaN(preco1) || isNaN(volume2) || isNaN(preco2)) {
             alert('Por favor, preencha todos os campos corretamente.');
             return;
         }
 
-        let nomeEstabelecimento = '';
-        if (estabelecimentoSelect.value === '_new_') {
-            nomeEstabelecimento = newEstabelecimentoNameInput.value.trim();
-        } else {
-            nomeEstabelecimento = estabelecimentoSelect.value.trim();
-        }
-
-        if (!nomeEstabelecimento) {
-            alert('O nome do estabelecimento é obrigatório.');
-            return;
-        }
-
-        let estabelecimento_id = null;
-
         try {
-            estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
-            populateEstabelecimentosSelect(); // Update the select with the new establishment if created
-        } catch (error) {
-            console.error('Erro ao processar estabelecimento:', error);
-            alert(`Ocorreu um erro: ${error.message}`);
-            return;
-        }
+            const estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
 
-        const cervejasParaInserir = [
+            const cervejasParaInserir = [
                 { marca, volume: volume1, preco: preco1, estabelecimento_id, tipo_envase: 'comparador' },
                 { marca, volume: volume2, preco: preco2, estabelecimento_id, tipo_envase: 'comparador' }
             ];
@@ -106,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             resultadoDiv.innerHTML = resultadoHTML;
             resultadoDiv.classList.remove('hidden');
             alert('Comparação salva com sucesso!');
+
+            populateEstabelecimentosDatalist();
 
         } catch (error) {
             console.error('Erro no processo de comparação:', error);
