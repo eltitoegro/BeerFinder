@@ -53,43 +53,54 @@ label {
 
 /* --- Card de Resultado --- */
 .resultado-card {
-    background-color: #e0ffe0;
-    border: 1px solid #00a000;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 8px;
+    background-color: #f8f9fa; /* Cor de fundo mais suave */
+    border: 1px solid #dee2e6; /* Borda sutil */
+    padding: 0;
+    margin-top: 25px;
+    border-radius: 10px; /* Bordas mais arredondadas */
+    overflow: hidden; /* Garante que o conteúdo interno respeite as bordas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra suave */
+    transition: all 0.3s ease-in-out; /* Animação suave */
 }
 
 .resultado-card.hidden {
     display: none;
 }
 
-.resultado-card h2 {
-    color: #006400;
-    font-size: 1.6em;
+.winner-card {
+    padding: 25px;
     text-align: center;
 }
 
-.resultado-card p {
-    text-align: center;
-    font-size: 1.1em;
+.winner-tag {
+    background-color: #28a745; /* Verde sucesso */
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.9em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winner-card h2 {
+    color: #343a40; /* Cor de texto escura */
+    font-size: 1.8em; /* Fonte maior */
+    margin: 20px 0 10px;
+}
+
+.price-per-liter {
+    font-size: 1.2em;
+    color: #495057; /* Cor de texto secundária */
     margin-bottom: 15px;
 }
 
-.price-details {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    margin-top: 20px;
+.price-per-liter strong {
+    color: #28a745; /* Destaque em verde */
+    font-size: 1.4em;
 }
 
-.price-details span {
-    display: block;
-    font-size: 1.2em;
-    font-weight: 700;
-}
-
-.price-details small {
-    font-size: 0.9em;
-    color: #555;
+.savings {
+    font-size: 1.1em;
+    color: #6c757d; /* Cor de texto suave */
 }

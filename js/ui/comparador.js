@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .select('id, nome');
             if (error) throw error;
 
-            // Clear existing options except the first two
             while (estabelecimentoSelect.options.length > 2) {
                 estabelecimentoSelect.remove(2);
             }
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
-            alert('Não foi possível carregar a lista de estabelecimentos. Verifique a conexão e tente recarregar a página.');
         }
     }
 
@@ -97,29 +95,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 { marca, volume: volume2, preco: preco2, estabelecimento_id, tipo_envase: 'comparador' }
             ];
 
-            const { error: errorCerveja } = await window.supabaseClient
-                .from('cervejas')
-                .insert(cervejasParaInserir);
+            await window.supabaseClient.from('cervejas').insert(cervejasParaInserir);
 
-            if (errorCerveja) throw errorCerveja;
+            const precoPorLitro1 = (preco1 / volume1) * 1000;
+            const precoPorLitro2 = (preco2 / volume2) * 1000;
 
-            const precoPorMl1 = preco1 / volume1;
-            const precoPorMl2 = preco2 / volume2;
-
-            let resultadoHTML = '';
-            if (precoPorMl1 < precoPorMl2) {
-                resultadoHTML = `<h2>A Opção 1 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl2 - precoPorMl1).toFixed(4)} por ml.</p>`;
-            } else if (precoPorMl2 < precoPorMl1) {
-                resultadoHTML = `<h2>A Opção 2 é a mais barata!</h2><p>Economia de R$ ${(precoPorMl1 - precoPorMl2).toFixed(4)} por ml.</p>`;
+            let melhorOpcao, piorOpcao, economia;
+            if (precoPorLitro1 < precoPorLitro2) {
+                melhorOpcao = { nome: marca, volume: volume1, precoPorLitro: precoPorLitro1 };
+                piorOpcao = { precoPorLitro: precoPorLitro2 };
+                economia = piorOpcao.precoPorLitro - melhorOpcao.precoPorLitro;
             } else {
-                resultadoHTML = `<h2>Ambas as opções têm o mesmo preço por ml.</h2>`;
+                melhorOpcao = { nome: marca, volume: volume2, precoPorLitro: precoPorLitro2 };
+                piorOpcao = { precoPorLitro: precoPorLitro1 };
+                economia = piorOpcao.precoPorLitro - melhorOpcao.precoPorLitro;
             }
 
-            resultadoDiv.innerHTML = resultadoHTML;
-            resultadoDiv.classList.remove('hidden');
-            alert('Comparação salva com sucesso!');
+            resultadoDiv.innerHTML = `
+                <div class="winner-card">
+                    <span class="winner-tag">Mais Barata</span>
+                    <h2>A ${melhorOpcao.nome} de ${melhorOpcao.volume}ml é a melhor opção!</h2>
+                    <p class="price-per-liter">Preço por litro: <strong>R$ ${melhorOpcao.precoPorLitro.toFixed(2)}</strong></p>
+                    ${economia > 0 ? `<p class="savings">Você economiza R$ ${economia.toFixed(2)} por litro em comparação com a outra opção.</p>` : '<p class="savings">As duas opções têm o mesmo preço.</p>'}
+                </div>
+            `;
 
-            // Reset form and update list
+            resultadoDiv.classList.remove('hidden');
             form.reset();
             newEstabelecimentoNameInput.style.display = 'none';
             populateEstabelecimentosSelect();
