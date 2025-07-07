@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
-    // Function to fetch and populate establishments select
+    // Função para buscar e popular o select de estabelecimentos
     async function populateEstabelecimentosSelect() {
         try {
             const { data, error } = await window.supabaseClient
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            // Clear existing options except the first two (placeholder and add new)
+            // Limpa as opções existentes, exceto as duas primeiras (placeholder e adicionar novo)
             while (estabelecimentoSelect.options.length > 2) {
                 estabelecimentoSelect.remove(2);
             }
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Populate select on page load
+    // Popula o select ao carregar a página
     populateEstabelecimentosSelect();
 
     estabelecimentoSelect.addEventListener('change', () => {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             newEstabelecimentoNameInput.style.display = 'none';
             newEstabelecimentoNameInput.removeAttribute('required');
-            newEstabelecimentoNameInput.value = ''; // Clear the input if not adding new
+            newEstabelecimentoNameInput.value = ''; // Limpa o input se não estiver adicionando um novo
         }
     });
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Now insert the beer using the correct estabelecimento_id
+        // Agora insere a cerveja usando o estabelecimento_id correto
         const { error: errorCerveja } = await window.supabaseClient
           .from('cervejas')
           .insert([{

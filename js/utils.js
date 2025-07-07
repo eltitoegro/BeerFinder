@@ -1,25 +1,25 @@
 export async function getOrCreateEstabelecimento(nome) {
-  // Intenta buscar el establecimiento
+  // Tenta buscar o estabelecimento
   const { data: existente, error: errorBusca } = await window.supabaseClient
     .from('estabelecimentos')
     .select('id')
     .eq('nome', nome);
 
-  // Si hay un error real (no solo que no se encontró), lo lanza
+  // Se houver um erro real (não apenas que não foi encontrado), lança-o
   if (errorBusca) {
     throw errorBusca;
   }
 
-  // Si el establecimiento existe, devuelve su ID
+  // Se o estabelecimento existir, retorna seu ID
   if (existente && existente.length > 0) {
     return existente[0].id;
   } else {
-    // Si no existe, lo crea
+    // Se não existir, cria-o
     const { data: novo, error: errorInsert } = await window.supabaseClient
       .from('estabelecimentos')
       .insert([{ nome }])
       .select('id')
-      .single(); // Aquí sí esperamos un único resultado
+      .single(); // Aqui sim esperamos um único resultado
 
     if (errorInsert) {
       throw errorInsert;

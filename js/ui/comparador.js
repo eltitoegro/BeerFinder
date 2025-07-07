@@ -145,9 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultadoHTML = `
                 <div class="resultado-content" style="padding: 30px; text-align: center;">
                      <div style="font-size: 3.5em; line-height: 1;">🤝</div>
-                    <h2 style="font-family: 'Oswald', sans-serif; font-size: 2.2em; font-weight: 700; margin: 15px 0 10px; color: #495057;">¡Es un empate!</h2>
+                    <h2 style="font-family: 'Oswald', sans-serif; font-size: 2.2em; font-weight: 700; margin: 15px 0 10px; color: #495057;">É um empate!</h2>
                     <p style="font-size: 1.2em; margin: 0 0 20px; color: #555;">
-                        Ambas cervezas tienen el mismo precio por litro.
+                        Ambas cervejas têm o mesmo preço por litro.
                     </p>
                     <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #6c757d;">
                         <p>Preço por litro da Opção 1: R$ ${precoPorLitro1.toFixed(2)}</p>

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Asegura que el cliente Supabase esté disponible globalmente desde api.js
+    // Garante que o cliente Supabase esteja disponível globalmente a partir de api.js
     if (typeof window.supabaseClient === 'undefined') {
         console.error('Supabase client não foi encontrado. Verifique se api.js está sendo carregado corretamente.');
         return;
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', handleCompare);
 });
 
-// Función para salvar UMA cerveja no Supabase
+// Função para salvar UMA cerveja no Supabase
 async function salvarCerveja(cerveja) {
     try {
         const { data, error } = await window.supabaseClient

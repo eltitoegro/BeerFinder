@@ -1,4 +1,4 @@
-// Supabase Connection - BeerFinder
+// Conexão Supabase - BeerFinder
 // Francisco - Praia do Rosa, SC
 
 const SupabaseConfig = {
