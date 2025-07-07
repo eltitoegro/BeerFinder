@@ -22,11 +22,12 @@
         <main>
             <form id="compareForm">
                 <div class="form-section">
-                    <label for="estabelecimentoInput">Onde você está comprando?</label>
-                    <input type="text" id="estabelecimentoInput" list="estabelecimentoList" placeholder="Digite ou selecione um estabelecimento" required>
-                    <datalist id="estabelecimentoList">
-                        <!-- Options will be populated by JavaScript -->
-                    </datalist>
+                    <label for="estabelecimentoSelect">Onde você está comprando?</label>
+                    <select id="estabelecimentoSelect" required>
+                        <option value="">Selecione um establecimiento</option>
+                        <option value="_new_">Adicionar nuevo establecimiento</option>
+                    </select>
+                    <input type="text" id="newEstabelecimentoName" placeholder="Nombre del nuevo establecimiento" style="display:none; margin-top: 10px;">
 
                     <label for="marca">Cuál es la marca de la cerveza?</label>
                     <input type="text" id="marca" placeholder="Ej: Skol, Brahma" required>

@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
-    const estabelecimentoInput = document.getElementById('estabelecimentoInput');
-    const estabelecimentoList = document.getElementById('estabelecimentoList');
+    const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
+    const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
     async function getOrCreateEstabelecimento(nome) {
         const { data: existente, error: errorBusca } = await window.supabaseClient
@@ -31,19 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function populateEstabelecimentosDatalist() {
+    async function populateEstabelecimentosSelect() {
         try {
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
             if (error) throw error;
 
-            estabelecimentoList.innerHTML = '';
+            // Clear existing options except the first two
+            while (estabelecimentoSelect.options.length > 2) {
+                estabelecimentoSelect.remove(2);
+            }
 
             data.forEach(estab => {
                 const option = document.createElement('option');
                 option.value = estab.nome;
-                estabelecimentoList.appendChild(option);
+                option.textContent = estab.nome;
+                estabelecimentoSelect.appendChild(option);
             });
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
@@ -51,12 +55,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    populateEstabelecimentosDatalist();
+    populateEstabelecimentosSelect();
+
+    estabelecimentoSelect.addEventListener('change', () => {
+        if (estabelecimentoSelect.value === '_new_') {
+            newEstabelecimentoNameInput.style.display = 'block';
+            newEstabelecimentoNameInput.setAttribute('required', 'true');
+        } else {
+            newEstabelecimentoNameInput.style.display = 'none';
+            newEstabelecimentoNameInput.removeAttribute('required');
+            newEstabelecimentoNameInput.value = '';
+        }
+    });
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const nomeEstabelecimento = estabelecimentoInput.value.trim();
+        let nomeEstabelecimento;
+        if (estabelecimentoSelect.value === '_new_') {
+            nomeEstabelecimento = newEstabelecimentoNameInput.value.trim();
+        } else {
+            nomeEstabelecimento = estabelecimentoSelect.value;
+        }
+
         const marca = document.getElementById('marca').value.trim();
         const volume1 = parseInt(document.getElementById('volume1').value);
         const preco1 = parseFloat(document.getElementById('preco1').value);
@@ -98,7 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
             resultadoDiv.classList.remove('hidden');
             alert('Comparação salva com sucesso!');
 
-            populateEstabelecimentosDatalist();
+            // Reset form and update list
+            form.reset();
+            newEstabelecimentoNameInput.style.display = 'none';
+            populateEstabelecimentosSelect();
 
         } catch (error) {
             console.error('Erro no processo de comparação:', error);
