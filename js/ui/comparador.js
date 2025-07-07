@@ -118,41 +118,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (economia > 0) {
                 resultadoHTML = `
-                <div style="font-family: 'Roboto', sans-serif; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 25px; text-align: center; color: #333;">
-                    <div style="font-size: 3.5em; line-height: 1;">🎉</div>
-                    <h2 style="font-family: 'Oswald', sans-serif; font-size: 2.2em; font-weight: 700; margin: 15px 0 10px; color: #28a745;">¡Victoria para tu bolsillo!</h2>
-                    <p style="font-size: 1.2em; margin: 0 0 20px; color: #555;">
-                        La <strong>${melhorOpcao.nome} de ${melhorOpcao.volume}ml</strong> es la ganadora indiscutible.
-                    </p>
-                    <div style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0; margin: 20px 0;">
-                        <span style="font-size: 1em; color: #6c757d; display: block; text-transform: uppercase; letter-spacing: 1px;">Precio por Litro</span>
-                        <span style="font-size: 2.8em; font-weight: 700; color: #28a745; display: block; line-height: 1.2;">R$ ${melhorOpcao.precoPorLitro.toFixed(2)}</span>
+                <div class="resultado-content" style="padding: 30px; text-align: center;">
+                    <div class="savings-badge" style="display: inline-block; padding: 12px 25px; border-radius: 50px; background-image: linear-gradient(to right, #00C851, #00A041); color: #fff; font-size: 1.4em; font-weight: 700; animation: pulse 2s infinite;">
+                        Você economizou ${percentualEconomia.toFixed(0)}%!
                     </div>
-                    <div style="background-color: #f0fff4; border-radius: 8px; padding: 15px; margin-top: 20px;">
-                        <p style="font-size: 1.2em; margin: 0 0 10px 0; font-weight: 500;">
-                            ¡Estás ahorrando un <strong>${percentualEconomia.toFixed(0)}%</strong>!
-                        </p>
-                        <p style="font-size: 1em; margin: 0; color: #555;">
-                            Eso es <strong>R$ ${economia.toFixed(2)}</strong> menos por cada litro. ¡Salud por esa sabia decisión! 🍻
-                        </p>
+
+                    <div class="savings-amount" style="font-size: 44px; font-weight: 900; color: #212529; margin: 20px 0 5px;">
+                        R$ ${economia.toFixed(2)}
                     </div>
+                    <p style="font-size: 1.2em; color: #6c757d; margin: 0 0 30px;">a menos por litro</p>
+
+                    <div class="winner-product" style="background-color: #f8f9fa; padding: 20px; border-radius: 12px; border-left: 5px solid #00C851; text-align: left;">
+                        <span style="font-size: 0.9em; font-weight: 700; color: #007a33; text-transform: uppercase; letter-spacing: 0.5px;">Melhor escolha</span>
+                        <p style="font-size: 1.5em; font-weight: 700; color: #343a40; margin: 5px 0 0;">${melhorOpcao.nome} ${melhorOpcao.volume}ml</p>
+                    </div>
+
+                    <button class="btn-compare-again" onclick="window.location.reload();">Comparar outras</button>
                 </div>
                 `;
             } else {
                 resultadoHTML = `
-                <div style="font-family: 'Roboto', sans-serif; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 25px; text-align: center; color: #333;">
-                    <div style="font-size: 3.5em; line-height: 1;">🤝</div>
+                <div class="resultado-content" style="padding: 30px; text-align: center;">
+                     <div style="font-size: 3.5em; line-height: 1;">🤝</div>
                     <h2 style="font-family: 'Oswald', sans-serif; font-size: 2.2em; font-weight: 700; margin: 15px 0 10px; color: #495057;">¡Es un empate!</h2>
                     <p style="font-size: 1.2em; margin: 0 0 20px; color: #555;">
                         Ambas cervezas tienen el mismo precio por litro.
                     </p>
-                    <div style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0; margin: 20px 0;">
-                        <span style="font-size: 1em; color: #6c757d; display: block; text-transform: uppercase; letter-spacing: 1px;">Precio por Litro</span>
-                        <span style="font-size: 2.8em; font-weight: 700; color: #343a40; display: block; line-height: 1.2;">R$ ${melhorOpcao.precoPorLitro.toFixed(2)}</span>
-                    </div>
-                    <p style="font-size: 1.1em; margin-top: 20px; color: #555;">
-                        Cualquier elección es una buena elección. ¡A disfrutar!
-                    </p>
+                    <button class="btn-compare-again" onclick="window.location.reload();">Comparar outras</button>
                 </div>
                 `;
             }

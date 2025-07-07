@@ -51,56 +51,68 @@ label {
     color: #555;
 }
 
-/* --- Card de Resultado --- */
+/* --- Novas Animações --- */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(0, 199, 81, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 25px rgba(0, 199, 81, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(0, 199, 81, 0.2);
+    }
+}
+
+/* --- Card de Resultado (Novo Estilo) --- */
 .resultado-card {
-    background-color: #f8f9fa; /* Cor de fundo mais suave */
-    border: 1px solid #dee2e6; /* Borda sutil */
+    background-color: #ffffff;
+    border: none;
     padding: 0;
     margin-top: 25px;
-    border-radius: 10px; /* Bordas mais arredondadas */
-    overflow: hidden; /* Garante que o conteúdo interno respeite as bordas */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra suave */
-    transition: all 0.3s ease-in-out; /* Animação suave */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.5s ease-out forwards;
 }
 
 .resultado-card.hidden {
     display: none;
 }
 
-.winner-card {
-    padding: 25px;
-    text-align: center;
-}
-
-.winner-tag {
-    background-color: #28a745; /* Verde sucesso */
-    color: #fff;
-    padding: 5px 15px;
-    border-radius: 50px;
-    font-size: 0.9em;
+/* --- Botão (Novo Estilo) --- */
+.btn-compare-again {
+    display: inline-block;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 25px;
+    font-family: 'Roboto', sans-serif;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 1em;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    background-image: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+    transition: all 0.3s ease;
+    margin-top: 20px;
 }
 
-.winner-card h2 {
-    color: #343a40; /* Cor de texto escura */
-    font-size: 1.8em; /* Fonte maior */
-    margin: 20px 0 10px;
-}
-
-.price-per-liter {
-    font-size: 1.2em;
-    color: #495057; /* Cor de texto secundária */
-    margin-bottom: 15px;
-}
-
-.price-per-liter strong {
-    color: #28a745; /* Destaque em verde */
-    font-size: 1.4em;
-}
-
-.savings {
-    font-size: 1.1em;
-    color: #6c757d; /* Cor de texto suave */
+.btn-compare-again:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(118, 75, 162, 0.5);
 }
