@@ -107,21 +107,57 @@ document.addEventListener('DOMContentLoaded', () => {
             if (precoPorLitro1 < precoPorLitro2) {
                 melhorOpcao = { nome: marca, volume: volume1, precoPorLitro: precoPorLitro1 };
                 piorOpcao = { precoPorLitro: precoPorLitro2 };
-                economia = piorOpcao.precoPorLitro - melhorOpcao.precoPorLitro;
             } else {
                 melhorOpcao = { nome: marca, volume: volume2, precoPorLitro: precoPorLitro2 };
                 piorOpcao = { precoPorLitro: precoPorLitro1 };
-                economia = piorOpcao.precoPorLitro - melhorOpcao.precoPorLitro;
+            }
+            economia = piorOpcao.precoPorLitro - melhorOpcao.precoPorLitro;
+            const percentualEconomia = economia > 0 ? (economia / piorOpcao.precoPorLitro) * 100 : 0;
+
+            let resultadoHTML;
+
+            if (economia > 0) {
+                resultadoHTML = `
+                <div style="font-family: 'Roboto', sans-serif; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 25px; text-align: center; color: #333;">
+                    <div style="font-size: 3.5em; line-height: 1;">🎉</div>
+                    <h2 style="font-family: 'Oswald', sans-serif; font-size: 2.2em; font-weight: 700; margin: 15px 0 10px; color: #28a745;">¡Victoria para tu bolsillo!</h2>
+                    <p style="font-size: 1.2em; margin: 0 0 20px; color: #555;">
+                        La <strong>${melhorOpcao.nome} de ${melhorOpcao.volume}ml</strong> es la ganadora indiscutible.
+                    </p>
+                    <div style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0; margin: 20px 0;">
+                        <span style="font-size: 1em; color: #6c757d; display: block; text-transform: uppercase; letter-spacing: 1px;">Precio por Litro</span>
+                        <span style="font-size: 2.8em; font-weight: 700; color: #28a745; display: block; line-height: 1.2;">R$ ${melhorOpcao.precoPorLitro.toFixed(2)}</span>
+                    </div>
+                    <div style="background-color: #f0fff4; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                        <p style="font-size: 1.2em; margin: 0 0 10px 0; font-weight: 500;">
+                            ¡Estás ahorrando un <strong>${percentualEconomia.toFixed(0)}%</strong>!
+                        </p>
+                        <p style="font-size: 1em; margin: 0; color: #555;">
+                            Eso es <strong>R$ ${economia.toFixed(2)}</strong> menos por cada litro. ¡Salud por esa sabia decisión! 🍻
+                        </p>
+                    </div>
+                </div>
+                `;
+            } else {
+                resultadoHTML = `
+                <div style="font-family: 'Roboto', sans-serif; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 25px; text-align: center; color: #333;">
+                    <div style="font-size: 3.5em; line-height: 1;">🤝</div>
+                    <h2 style="font-family: 'Oswald', sans-serif; font-size: 2.2em; font-weight: 700; margin: 15px 0 10px; color: #495057;">¡Es un empate!</h2>
+                    <p style="font-size: 1.2em; margin: 0 0 20px; color: #555;">
+                        Ambas cervezas tienen el mismo precio por litro.
+                    </p>
+                    <div style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0; margin: 20px 0;">
+                        <span style="font-size: 1em; color: #6c757d; display: block; text-transform: uppercase; letter-spacing: 1px;">Precio por Litro</span>
+                        <span style="font-size: 2.8em; font-weight: 700; color: #343a40; display: block; line-height: 1.2;">R$ ${melhorOpcao.precoPorLitro.toFixed(2)}</span>
+                    </div>
+                    <p style="font-size: 1.1em; margin-top: 20px; color: #555;">
+                        Cualquier elección es una buena elección. ¡A disfrutar!
+                    </p>
+                </div>
+                `;
             }
 
-            resultadoDiv.innerHTML = `
-                <div class="winner-card">
-                    <span class="winner-tag">Mais Barata</span>
-                    <h2>A ${melhorOpcao.nome} de ${melhorOpcao.volume}ml é a melhor opção!</h2>
-                    <p class="price-per-liter">Preço por litro: <strong>R$ ${melhorOpcao.precoPorLitro.toFixed(2)}</strong></p>
-                    ${economia > 0 ? `<p class="savings">Você economiza R$ ${economia.toFixed(2)} por litro em comparação com a outra opção.</p>` : '<p class="savings">As duas opções têm o mesmo preço.</p>'}
-                </div>
-            `;
+            resultadoDiv.innerHTML = resultadoHTML;
 
             resultadoDiv.classList.remove('hidden');
             form.reset();
