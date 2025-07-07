@@ -106,13 +106,13 @@ label {
     color: #fff;
     text-decoration: none;
     cursor: pointer;
-    background-image: linear-gradient(to right, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+    background-image: linear-gradient(to right, #FF8C00 0%, #FF6347 100%); /* Naranja */
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
     transition: all 0.3s ease;
     margin-top: 20px;
 }
 
 .btn-compare-again:hover {
     transform: translateY(-3px);
-    box-shadow: 0 7px 20px rgba(118, 75, 162, 0.5);
+    box-shadow: 0 7px 20px rgba(255, 140, 0, 0.5);
 }

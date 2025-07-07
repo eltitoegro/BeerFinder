@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultadoHTML = `
                 <div class="resultado-content" style="padding: 30px; text-align: center;">
                     <div class="savings-badge" style="display: inline-block; padding: 12px 25px; border-radius: 50px; background-image: linear-gradient(to right, #00C851, #00A041); color: #fff; font-size: 1.4em; font-weight: 700; animation: pulse 2s infinite;">
-                        Você economizou ${percentualEconomia.toFixed(0)}%!
+                        Você vai economizar ${percentualEconomia.toFixed(0)}%!
                     </div>
 
                     <div class="savings-amount" style="font-size: 44px; font-weight: 900; color: #212529; margin: 20px 0 5px;">
@@ -131,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="winner-product" style="background-color: #f8f9fa; padding: 20px; border-radius: 12px; border-left: 5px solid #00C851; text-align: left;">
                         <span style="font-size: 0.9em; font-weight: 700; color: #007a33; text-transform: uppercase; letter-spacing: 0.5px;">Melhor escolha</span>
                         <p style="font-size: 1.5em; font-weight: 700; color: #343a40; margin: 5px 0 0;">${melhorOpcao.nome} ${melhorOpcao.volume}ml</p>
+                    </div>
+
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #6c757d;">
+                        <p>Preço por litro da Opção 1: R$ ${precoPorLitro1.toFixed(2)}</p>
+                        <p>Preço por litro da Opção 2: R$ ${precoPorLitro2.toFixed(2)}</p>
                     </div>
 
                     <button class="btn-compare-again" onclick="window.location.reload();">Comparar outras</button>
@@ -144,6 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p style="font-size: 1.2em; margin: 0 0 20px; color: #555;">
                         Ambas cervezas tienen el mismo precio por litro.
                     </p>
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; font-size: 0.9em; color: #6c757d;">
+                        <p>Preço por litro da Opção 1: R$ ${precoPorLitro1.toFixed(2)}</p>
+                        <p>Preço por litro da Opção 2: R$ ${precoPorLitro2.toFixed(2)}</p>
+                    </div>
                     <button class="btn-compare-again" onclick="window.location.reload();">Comparar outras</button>
                 </div>
                 `;
