@@ -5,24 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
 
     async function getOrCreateEstabelecimento(nome) {
-        const { data: existente, error: errorBusca } = await window.supabaseClient
+        // Fetch all establishments with the given name
+        const { data: existentes, error: errorBusca } = await window.supabaseClient
             .from('estabelecimentos')
             .select('id')
-            .eq('nome', nome)
-            .single();
+            .eq('nome', nome);
 
-        if (errorBusca && errorBusca.code !== 'PGRST116') { // PGRST116 = no rows returned
+        if (errorBusca) {
+            // If there's a real error, throw it
             throw errorBusca;
         }
 
-        if (existente) {
-            return existente.id;
+        // If one or more establishments exist, return the ID of the first one
+        if (existentes && existentes.length > 0) {
+            return existentes[0].id;
         } else {
+            // If it doesn't exist, create it
             const { data: novo, error: errorInsert } = await window.supabaseClient
                 .from('estabelecimentos')
                 .insert([{ nome }])
                 .select('id')
-                .single();
+                .single(); // .single() is correct here as we expect one new row
 
             if (errorInsert) {
                 throw errorInsert;
