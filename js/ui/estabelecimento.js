@@ -2,16 +2,33 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('estabelecimentoForm').addEventListener('submit', async function(event) {
         event.preventDefault();
 
-        const enderecoValue = document.getElementById('enderecoEstabelecimento').value;
+        const latitudeValue = parseFloat(document.getElementById('latitude').value);
+        const longitudeValue = parseFloat(document.getElementById('longitude').value);
+
         const novoEstabelecimento = {
             nome: document.getElementById('nome').value,
-            // horario_funcionamento: document.getElementById('horarioFuncionamento').value, // Removed for now
-            endereco: enderecoValue // Now includes the 'endereco' field
+            latitude: isNaN(latitudeValue) ? null : latitudeValue,
+            longitude: isNaN(longitudeValue) ? null : longitudeValue
         };
 
         const contatoValue = document.getElementById('contato').value;
         if (contatoValue) {
             novoEstabelecimento.contato = contatoValue;
+        }
+
+        const horarioFuncionamentoValue = document.getElementById('horarioFuncionamento').value;
+        if (horarioFuncionamentoValue) {
+            novoEstabelecimento.horario_funcionamento = horarioFuncionamentoValue;
+        }
+
+        const tipoEstabelecimentoValue = document.getElementById('tipoEstabelecimento').value;
+        if (tipoEstabelecimentoValue) {
+            novoEstabelecimento.tipo = tipoEstabelecimentoValue;
+        }
+
+        const observacoesValue = document.getElementById('observacoes').value;
+        if (observacoesValue) {
+            novoEstabelecimento.observacoes = observacoesValue;
         }
 
         const { data, error } = await window.supabaseClient
@@ -26,23 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Estabelecimento cadastrado com sucesso:', data);
             alert('Estabelecimento cadastrado com sucesso!');
             document.getElementById('estabelecimentoForm').reset();
-        }
-    });
-
-    document.getElementById('getLocationBtnEstab').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                
-                document.getElementById('enderecoEstabelecimento').value = `Lat: ${lat}, Lon: ${lon}`;
-                
-            }, error => {
-                console.error('Erro ao obter localização:', error);
-                alert('Não foi possível obter sua localização. Verifique as permissões do navegador.');
-            });
-        } else {
-            alert('Geolocalização não é suportada por este navegador.');
         }
     });
 });
