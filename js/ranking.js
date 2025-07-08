@@ -1,106 +1,124 @@
-// import { supabase } from './api.js'; // Assuming api.js exports supabase client
-
 document.addEventListener('DOMContentLoaded', () => {
     const beerSelect = document.getElementById('beerSelect');
-    const searchBeerBtn = document.getElementById('searchBeerBtn');
+    const volumeSelect = document.getElementById('volumeSelect');
+    const searchRankingBtn = document.getElementById('searchRankingBtn');
     const rankingResultsDiv = document.getElementById('rankingResults');
 
-    // Function to format price
+    let allCervejas = []; // Para armazenar todas as cervejas e filtrar por marca/volume
+
+    // Função para formatar preço
     const formatPrice = (value) => {
         return `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}`;
     };
 
-    // Populate beer select options
+    // Função para calcular preço por litro
+    const calculatePricePerLiter = (price, volume) => {
+        return (price / (volume / 1000));
+    };
+
+    // Popula o select de cervejas
     async function populateBeerSelect() {
-        console.log('Debug: populateBeerSelect called.');
         try {
             const { data, error } = await window.supabaseClient
                 .from('cervejas')
                 .select('marca, volume');
 
-            if (error) {
-                console.error('Debug: Error fetching cervejas for select population:', error);
-                throw error;
-            }
-            console.log('Debug: Cervejas data fetched for select:', data);
+            if (error) throw error;
+            allCervejas = data; // Armazena todas as cervejas
 
             const uniqueBeers = new Set();
             data.forEach(beer => {
-                uniqueBeers.add(`${beer.marca} ${beer.volume}ml`);
+                uniqueBeers.add(beer.marca);
             });
-            console.log('Debug: Unique beers generated:', uniqueBeers);
 
-            // Clear existing options except the first one (placeholder)
-            while (beerSelect.options.length > 1) {
-                beerSelect.remove(1);
-            }
-
-            uniqueBeers.forEach(beer => {
+            beerSelect.innerHTML = '<option value="">Selecione uma cerveja</option>';
+            uniqueBeers.forEach(marca => {
                 const option = document.createElement('option');
-                option.value = beer;
-                option.textContent = beer;
+                option.value = marca;
+                option.textContent = marca;
                 beerSelect.appendChild(option);
             });
-            console.log('Debug: Beer select populated.');
+
         } catch (error) {
             console.error('Erro ao carregar opções de cerveja:', error);
+            rankingResultsDiv.innerHTML = '<p class="empty-state">Erro ao carregar cervejas. Tente novamente mais tarde.</p>';
         }
     }
 
-    // Fetch and display ranking for selected beer
+    // Popula o select de volume baseado na cerveja selecionada
+    function populateVolumeSelect(selectedMarca) {
+        volumeSelect.innerHTML = '<option value="">Selecione o volume</option>';
+        if (!selectedMarca) {
+            volumeSelect.innerHTML = '<option value="">Selecione a cerveja primeiro</option>';
+            return;
+        }
+
+        const volumesForMarca = new Set();
+        allCervejas.filter(beer => beer.marca === selectedMarca)
+                   .forEach(beer => volumesForMarca.add(beer.volume));
+
+        const sortedVolumes = Array.from(volumesForMarca).sort((a, b) => a - b);
+
+        sortedVolumes.forEach(volume => {
+            const option = document.createElement('option');
+            option.value = volume;
+            option.textContent = `${volume}ml`;
+            volumeSelect.appendChild(option);
+        });
+    }
+
+    // Busca e exibe o ranking
     async function fetchAndDisplayRanking() {
-        const searchTerm = beerSelect.value;
-        if (!searchTerm) {
-            rankingResultsDiv.innerHTML = '<p class="empty-state">Selecione uma cerveja para ver o ranking de preços.</p>';
+        const selectedMarca = beerSelect.value;
+        const selectedVolume = parseInt(volumeSelect.value);
+
+        if (!selectedMarca || isNaN(selectedVolume)) {
+            rankingResultsDiv.innerHTML = '<p class="empty-state">Por favor, selecione uma cerveja e um volume.</p>';
             return;
         }
 
         rankingResultsDiv.innerHTML = '<p class="empty-state">Carregando ranking...</p>';
 
-        const [marca, volumeStr] = searchTerm.split(' ');
-        const volume = parseInt(volumeStr);
-
-        if (!marca || isNaN(volume)) {
-            rankingResultsDiv.innerHTML = '<p class="empty-state">Formato de busca inválido. Selecione uma opção válida.</p>';
-            return;
-        }
-
         try {
             const { data, error } = await window.supabaseClient
                 .from('cervejas')
                 .select(`
-                    marca,
-                    volume,
                     preco,
+                    volume,
                     created_at,
                     estabelecimentos ( nome )
                 `)
-                .eq('marca', marca)
-                .eq('volume', volume)
+                .eq('marca', selectedMarca)
+                .eq('volume', selectedVolume)
                 .order('preco', { ascending: true });
 
             if (error) throw error;
 
             if (data.length === 0) {
-                rankingResultsDiv.innerHTML = '<p class="empty-state">Não foram encontrados preços para esta cerveja.</p>';
+                rankingResultsDiv.innerHTML = '<p class="empty-state">Não foram encontrados preços para esta cerveja e volume.</p>';
                 return;
             }
 
-            rankingResultsDiv.innerHTML = '';
-            data.forEach(item => {
+            let rankingHTML = '';
+            data.forEach((item, index) => {
                 const estabelecimentoNome = item.estabelecimentos ? item.estabelecimentos.nome : 'Desconhecido';
-                const date = new Date(item.created_at).toLocaleDateString();
+                const date = new Date(item.created_at).toLocaleDateString('pt-BR');
+                const precoPorLitro = calculatePricePerLiter(item.preco, item.volume);
 
-                const rankingItem = `
+                rankingHTML += `
                     <div class="ranking-item">
-                        <strong>${item.marca} ${item.volume}ml</strong>
-                        <span class="price">${formatPrice(item.preco)}</span>
-                        <span class="location">${estabelecimentoNome}</span>
-                        <span class="date">Registrado em: ${date}</span>
+                        <div class="ranking-position">${index + 1}º</div>
+                        <div class="ranking-details">
+                            <span class="ranking-price">${formatPrice(item.preco)}</span>
+                            <span class="ranking-volume">(${item.volume}ml)</span>
+                            <span class="ranking-price-liter">R$ ${precoPorLitro.toFixed(2)}/Litro</span>
+                            <span class="ranking-establishment">em ${estabelecimentoNome}</span>
+                            <span class="ranking-date">Registrado em: ${date}</span>
+                        </div>
                     </div>
                 `;
-                rankingResultsDiv.innerHTML += rankingItem;
             });
+            rankingResultsDiv.innerHTML = rankingHTML;
 
         } catch (error) {
             console.error('Erro ao buscar ranking:', error);
@@ -108,9 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event listener for search button click
-    searchBeerBtn.addEventListener('click', fetchAndDisplayRanking);
+    // Event Listeners
+    beerSelect.addEventListener('change', (event) => {
+        populateVolumeSelect(event.target.value);
+    });
 
-    // Initial population of select options
+    searchRankingBtn.addEventListener('click', fetchAndDisplayRanking);
+
+    // Inicializa a população do select de cervejas
     populateBeerSelect();
 });

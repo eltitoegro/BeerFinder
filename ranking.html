@@ -13,14 +13,34 @@
 <body>
     <div class="container">
         <header class="header">
-            <a href="index.html" class="back-link">&larr; Voltar</a>
-            <h1>Ranking da Cerveja Mais Barata</h1>
-            <p>Veja os melhores preços reportados pela comunidade.</p>
+            <a href="index.html" class="btn btn-back">&larr; Voltar</a>
+            <div class="logo">
+                <span class="logo-icon">🍺</span>
+                <span class="logo-text">BeerFinderR$</span>
+            </div>
+            <div class="tagline">Encontre a cerveja mais barata!</div>
         </header>
 
         <main>
-            <p>Em breve, aqui você verá um ranking completo das cervejas mais baratas, atualizado em tempo real pela nossa comunidade.</p>
-            <p>Continue comparando e cadastrando para fazer este ranking crescer!</p>
+            <div class="filter-group">
+                <label for="beerSelect">Selecione a Cerveja:</label>
+                <select id="beerSelect">
+                    <option value="">Carregando...</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="volumeSelect">Selecione o Volume (ml):</label>
+                <select id="volumeSelect">
+                    <option value="">Selecione a cerveja primeiro</option>
+                </select>
+            </div>
+
+            <button type="button" id="searchRankingBtn" class="btn btn-primary">Buscar Melhor Preço</button>
+
+            <div id="rankingResults" class="ranking-results">
+                <p class="empty-state">Selecione uma cerveja e um volume para ver o ranking de preços.</p>
+            </div>
         </main>
 
         <footer class="footer">
