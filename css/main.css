@@ -144,6 +144,8 @@ input[type="text"], input[type="number"], select, textarea {
 .btn-primary {
     background: linear-gradient(135deg, #00C851, #00A041); /* Verde */
     color: white;
+    display: block; /* Hace que el botón ocupe todo el ancho disponible */
+    margin: 0 auto; /* Centra el botón horizontalmente */
 }
 
 .btn-primary:hover {

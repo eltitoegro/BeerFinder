@@ -79,6 +79,33 @@ const BeerFinder = {
                 }
             });
         });
+
+        // Cargar y exibir os contadores
+        this.loadAndDisplayCounts();
+    },
+
+    async loadAndDisplayCounts() {
+        try {
+            // Contar cervejas
+            const { count: cervejasCount, error: cervejasError } = await window.supabaseClient
+                .from('cervejas')
+                .select('id', { count: 'exact' });
+
+            if (cervejasError) throw cervejasError;
+            document.getElementById('totalCervejas').textContent = cervejasCount.toLocaleString('pt-BR');
+
+            // Contar estabelecimentos
+            const { count: estabelecimentosCount, error: estabelecimentosError } = await window.supabaseClient
+                .from('estabelecimentos')
+                .select('id', { count: 'exact' });
+
+            if (estabelecimentosError) throw estabelecimentosError;
+            document.getElementById('totalEstabelecimentos').textContent = estabelecimentosCount.toLocaleString('pt-BR');
+
+        } catch (error) {
+            console.error('Erro ao carregar contadores:', error);
+            // Opcional: exibir uma mensagem de erro na UI
+        }
     },
     
     initComparadorPage() {
