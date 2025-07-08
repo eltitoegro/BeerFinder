@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="ranking-position">${index + 1}º</div>
                         <div class="ranking-details">
                             <div class="establishment-info">
-                                <span class="establishment-type">${item.estabelecimentos.tipo || 'Tipo Desconhecido'}</span> - 
+                                <span class="establishment-type">${item.estabelecimentos.tipo || 'Tipo Desconhecido'}</span> 
                                 <span class="establishment-name">${estabelecimentoNome}</span>
                             </div>
                             <span class="ranking-price">${formatPrice(item.preco)}</span>

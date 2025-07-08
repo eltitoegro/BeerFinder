@@ -289,9 +289,8 @@ input[type="text"], input[type="number"], select, textarea {
 }
 
 .establishment-type {
-    font-size: 0.8em;
-    color: #666;
-    margin-right: 5px;
+    font-size: 1.4em;
+    color: #000;
 }
 
 .establishment-name {
