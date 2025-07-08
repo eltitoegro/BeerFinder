@@ -7,89 +7,33 @@
     --color-gray-dark: #4A4A4A;
 }
 
-* {
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-cream-soft);
+    color: var(--color-brown-beer);
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #ff9a56 0%, #ffad56 100%);
-    min-height: 100vh;
-    color: #333;
 }
 
 .container {
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px; /* Otimizado para telas de celular */
     margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    padding: 15px;
+    box-sizing: border-box; /* Garante que o padding não afete a largura total */
 }
 
-/* --- Header --- */
-.header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-top: 20px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-.logo-icon {
-    font-size: 32px;
-}
-
-.logo-text {
-    font-size: 28px;
-    font-weight: 800;
-    color: #2c3e50;
-}
-
-.tagline {
-    font-size: 18px;
-    color: #2c3e50;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.savings-preview {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-size: 14px;
-    color: #2c3e50;
-    display: inline-block;
-    backdrop-filter: blur(10px);
-}
-
-/* --- Footer --- */
-.footer {
-    margin-top: auto;
-    text-align: center;
-    color: rgba(44, 62, 80, 0.8);
-    font-size: 12px;
-}
-
-/* --- Hierarquia de Texto (ajustes si es necesario) --- */
+/* --- Hierarquia de Texto --- */
 h1, h2, h3 {
     font-family: 'Oswald', sans-serif;
     margin: 0 0 15px 0;
     font-weight: 700;
-    color: #2c3e50; /* Títulos negros */
+    color: var(--color-brown-beer);
 }
 
 h1 {
-    font-size: 2.8em;
-    color: #2c3e50; /* Título principal negro */
+    font-size: 2.8em; /* Título principal bien grande */
+    color: var(--color-orange-vibrant); /* Título principal en naranja vibrante */
 }
 
 h2 {
@@ -99,10 +43,16 @@ h2 {
 p {
     line-height: 1.6;
     margin: 0 0 10px 0;
-    color: #333; /* Párrafos negros */
+    color: var(--color-brown-beer);
 }
 
-/* --- Elementos de Formulário (mantener si se usan en otras páginas) --- */
+.tagline {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    color: var(--color-gray-dark);
+}
+
+/* --- Elementos de Formulário --- */
 form {
     display: flex;
     flex-direction: column;
@@ -117,7 +67,7 @@ input[type="text"], input[type="number"], select, textarea {
     font-size: 1em;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    color: #333; /* Inputs negros */
+    color: var(--color-brown-beer);
 }
 
 /* --- Botones --- */
@@ -135,45 +85,43 @@ input[type="text"], input[type="number"], select, textarea {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #00C851, #00A041); /* Verde */
-    color: white;
+    background-color: var(--color-orange-vibrant);
+    color: #fff;
 }
 
 .btn-primary:hover {
+    background-color: #e05a00;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 200, 81, 0.3);
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #00C851, #00A041); /* Verde */
-    color: white;
+    background-color: var(--color-green-vibrant);
+    color: #fff;
 }
 
 .btn-success:hover {
+    background-color: #00a384;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 200, 81, 0.3);
 }
 
 .btn-back {
-    background: rgba(255, 255, 255, 0.95); /* Blanco */
-    color: #333; /* Negro */
+    background-color: var(--color-gray-dark);
+    color: #fff;
 }
 
 .btn-back:hover {
-    background: white;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: #3a3a3a;
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.95); /* Blanco */
-    color: #333; /* Negro */
+    background-color: #6c757d; /* Mantener un gris para botones secundarios */
+    color: #fff;
 }
 
 .btn-secondary:hover {
-    background: white;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: #5a6268;
+    transform: translateY(-2px);
 }
 
 .btn-full {
@@ -185,4 +133,10 @@ input[type="text"], input[type="number"], select, textarea {
 .header, .footer {
     text-align: center;
     padding: 20px 0;
+}
+
+.footer {
+    margin-top: 30px;
+    color: var(--color-gray-dark);
+    font-size: 0.9em;
 }
