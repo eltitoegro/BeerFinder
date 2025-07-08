@@ -3,73 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeerFinder - Juntos, pela cerveja mais barata!</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>BeerFinder - Pare de pagar demais por cerveja</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/ranking.css">
-    <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1 class="logo">🍺 BeerFinder</h1>
-            <p class="tagline">Entende de cerveja, merece economizar</p>
+            <div class="logo">
+                <span class="logo-icon">🍺</span>
+                <span class="logo-text">BeerFinder</span>
+            </div>
+            <div class="tagline">Pare de pagar demais por cerveja</div>
+            <div class="savings-preview">
+                Usuários economizam em média R$ 28 por compra
+            </div>
         </header>
 
-        <main class="main-content">
-            <div class="button-grid">
-                <a href="comparador.html" class="btn btn-primary">
-                    <span class="btn-icon">📊</span>
-                    <span class="btn-text">Comparar Preços</span>
-                    <span class="btn-desc">Compare duas cervejas e economize</span>
-                </a>
-
-                <a href="cadastrar.html" class="btn btn-secondary">
-                    <span class="btn-icon">➕</span>
-                    <span class="btn-text">Cadastrar Cerveja</span>
-                    <span class="btn-desc">Adicione um preço que você encontrou</span>
-                </a>
-
-                <a href="estabelecimento.html" class="btn btn-tertiary">
-                    <span class="btn-icon">🏪</span>
-                    <span class="btn-text">Sou Estabelecimento</span>
-                    <span class="btn-desc">Cadastre seu comércio e seja um aliado</span>
-                </a>
-
-                <a href="mapa.html" class="btn btn-map">
-                    <span class="btn-icon">🗺️</span>
-                    <span class="btn-text">Mapa de Preços</span>
-                    <span class="btn-desc">Veja onde ficam os melhores preços</span>
-                </a>
+        <main>
+            <div class="main-action">
+                <button class="primary-button" data-target="comparador.html">
+                    <span class="button-icon">📊</span>
+                    <div>Comparar Preços</div>
+                    <div class="button-subtitle">Encontre a melhor oferta agora</div>
+                </button>
             </div>
 
-            <section class="ranking-section">
-                <h2>Ranking da Cerveja Mais Barata</h2>
-                <p>Encontre o melhor preço para sua cerveja favorita.</p>
-
-                <div class="filter-group">
-                    <label for="beerSelect">Buscar Cerveja:</label>
-                    <select id="beerSelect">
-                        <option value="">Selecione uma cerveja</option>
-                    </select>
-                    <button type="button" id="searchBeerBtn" class="btn btn-primary" style="margin-top: 10px;">Buscar</button>
+            <div class="map-button" data-target="mapa.html">
+                <span class="map-button-icon">🗺️</span>
+                <div>Mapa de Preços</div>
+                <div style="font-size: 12px; opacity: 0.9; margin-top: 4px;">
+                    Veja onde ficam os melhores preços
                 </div>
+            </div>
 
-                <div id="rankingResults" class="ranking-results">
-                    <!-- Ranking results will be loaded here -->
-                    <p class="empty-state">Selecione uma cerveja para ver o ranking de preços.</p>
+            <div class="secondary-actions">
+                <button class="secondary-button" data-target="cadastrar.html">
+                    <span class="secondary-button-icon">➕</span>
+                    <div>Cadastrar Cerveja</div>
+                </button>
+                <button class="secondary-button" data-target="estabelecimento.html">
+                    <span class="secondary-button-icon">🏪</span>
+                    <div>Sou Estabelecimento</div>
+                </button>
+            </div>
+
+            <div class="stats">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">2.847</div>
+                        <div class="stat-label">cervejas cadastradas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">estabelecimentos</div>
+                    </div>
                 </div>
-            </section>
+            </div>
         </main>
 
         <footer class="footer">
-            <p>Praia do Rosa, SC - Brasil</p>
-            <p class="version">v1.0 - MVP</p>
+            <p>Desenvolvido para quem entende de cerveja</p>
         </footer>
     </div>
-    <script type="module" src="js/ranking.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

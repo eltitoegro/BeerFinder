@@ -70,17 +70,14 @@ const BeerFinder = {
     
     // Inicialização das páginas
     initHomePage() {
-        // Animação de entrada dos botões
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach((btn, index) => {
-            btn.style.opacity = '0';
-            btn.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                btn.style.transition = 'all 0.3s ease';
-                btn.style.opacity = '1';
-                btn.style.transform = 'translateY(0)';
-            }, index * 100);
+        // Manejar clics en los nuevos botones de navegación
+        document.querySelectorAll('.primary-button, .secondary-button, .map-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetPage = button.dataset.target;
+                if (targetPage) {
+                    window.location.href = targetPage;
+                }
+            });
         });
     },
     
