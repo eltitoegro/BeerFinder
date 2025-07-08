@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const { data, error } = await window.supabaseClient
             .from('estabelecimentos')
             .insert([novoEstabelecimento])
-            .select('*');
+            .select('nome, latitude, longitude');
 
         if (error) {
             console.error('Erro ao cadastrar estabelecimento:', error);
