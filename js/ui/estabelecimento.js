@@ -37,7 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
             novoEstabelecimento.horario_funcionamento = horarioFuncionamentoValue;
         }
 
-        
+        const tipoEstabelecimentoValue = document.getElementById('tipoEstabelecimento').value;
+        if (tipoEstabelecimentoValue) {
+            novoEstabelecimento.tipo = tipoEstabelecimentoValue;
+        }
 
         const observacoesValue = document.getElementById('observacoes').value;
         if (observacoesValue) {
