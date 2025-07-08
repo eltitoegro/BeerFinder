@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     preco,
                     volume,
                     created_at,
-                    estabelecimentos ( nome )
+                    estabelecimentos ( nome, latitude, longitude )
                 `)
                 .eq('marca', selectedMarca)
                 .eq('volume', selectedVolume)
@@ -99,20 +99,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const bestPricesByEstablishment = new Map();
+
+            data.forEach(item => {
+                const estabelecimentoNome = item.estabelecimentos ? item.estabelecimentos.nome : 'Desconhecido';
+                const precoPorLitro = calculatePricePerLiter(item.preco, item.volume);
+
+                // Si el establecimiento no está en el mapa o si encontramos un precio mejor
+                if (!bestPricesByEstablishment.has(estabelecimentoNome) || precoPorLitro < bestPricesByEstablishment.get(estabelecimentoNome).precoPorLitro) {
+                    bestPricesByEstablishment.set(estabelecimentoNome, {
+                        itemData: item,
+                        precoPorLitro: precoPorLitro
+                    });
+                }
+            });
+
+            // Convertir el mapa a un array y ordenar por precio por litro
+            const sortedEstablishments = Array.from(bestPricesByEstablishment.values()).sort((a, b) => a.precoPorLitro - b.precoPorLitro);
+
+            // Tomar los 5 primeros establecimientos
+            const top5Establishments = sortedEstablishments.slice(0, 5);
+
+            if (top5Establishments.length === 0) {
+                rankingResultsDiv.innerHTML = '<p class="empty-state">Não foram encontrados preços para esta cerveja e volume.</p>';
+                return;
+            }
+
             let rankingHTML = '';
-            data.forEach((item, index) => {
+            top5Establishments.forEach((entry, index) => {
+                const item = entry.itemData;
                 const estabelecimentoNome = item.estabelecimentos ? item.estabelecimentos.nome : 'Desconhecido';
                 const date = new Date(item.created_at).toLocaleDateString('pt-BR');
-                const precoPorLitro = calculatePricePerLiter(item.preco, item.volume);
+                const precoPorLitro = entry.precoPorLitro; // Usar el precio por litro ya calculado y almacenado
 
                 rankingHTML += `
                     <div class="ranking-item">
                         <div class="ranking-position">${index + 1}º</div>
                         <div class="ranking-details">
+                            <a href="https://www.google.com/maps/search/?api=1&query=${item.estabelecimentos.latitude},${item.estabelecimentos.longitude}" target="_blank" class="ranking-establishment-name-link">${estabelecimentoNome}</a>
                             <span class="ranking-price">${formatPrice(item.preco)}</span>
                             <span class="ranking-volume">(${item.volume}ml)</span>
                             <span class="ranking-price-liter">R$ ${precoPorLitro.toFixed(2)}/Litro</span>
-                            <span class="ranking-establishment">em ${estabelecimentoNome}</span>
                             <span class="ranking-date">Registrado em: ${date}</span>
                         </div>
                     </div>
