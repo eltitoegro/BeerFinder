@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return (price / (volume / 1000));
     };
 
+    // Função para capitalizar a primeira letra
+    const capitalizeFirstLetter = (string) => {
+        if (!string) return '';
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     // Popula o select de cervejas
     async function populateBeerSelect() {
         try {
@@ -137,14 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="ranking-position">${index + 1}º</div>
                         <div class="ranking-details">
                             <div class="establishment-info">
-                                ${item.estabelecimentos.tipo ? `<span class="establishment-type">${item.estabelecimentos.tipo}</span> ` : ''}
-                                <span class="establishment-name">${estabelecimentoNome}</span>
+                                ${item.estabelecimentos.tipo ? `<span class="establishment-type">${capitalizeFirstLetter(item.estabelecimentos.tipo)}</span> ` : ''}
+                                <span class="establishment-name">${capitalizeFirstLetter(estabelecimentoNome)}</span>
                             </div>
                             <span class="ranking-price">${formatPrice(item.preco)}</span>
                             <span class="ranking-volume">(${item.volume}ml)</span>
                             <span class="ranking-price-liter">R$ ${precoPorLitro.toFixed(2)}/Litro</span>
                             <div class="establishment-location-link">
-                                <a href="https://www.google.com/maps/search/?api=1&query=${item.estabelecimentos.latitude},${item.estabelecimentos.longitude}" target="_blank" class="location-link">Clique aqui para saber onde fica</a>
+                                <a href="https://www.google.com/maps/search/?api=1&query=${item.estabelecimentos.latitude},${item.estabelecimentos.longitude}" target="_blank" class="location-link">📍 Clique aqui para saber onde fica</a>
                             </div>
                             <span class="ranking-date">Registrado em: ${date}</span>
                         </div>
