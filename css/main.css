@@ -49,10 +49,16 @@ body {
 }
 
 .logo-text {
-    font-size: 48px; /* Aumentar tamaño */
+    font-size: 48px; /* Tamaño grande */
     font-weight: 800;
     color: #2c3e50;
     animation: pulse-logo 2s infinite; /* Animación */
+}
+
+@keyframes pulse-logo {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 @keyframes pulse-logo {
