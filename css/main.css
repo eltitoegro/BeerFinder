@@ -49,7 +49,7 @@ body {
 }
 
 .logo-text {
-    font-size: 38px; /* Aumentar tamaño */
+    font-size: 48px; /* Aumentar tamaño */
     font-weight: 800;
     color: #2c3e50;
     animation: pulse-logo 2s infinite; /* Animación */
