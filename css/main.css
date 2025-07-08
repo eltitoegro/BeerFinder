@@ -193,6 +193,24 @@ input[type="text"], input[type="number"], select, textarea {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+.btn-geolocation {
+    background: #f0f0f0; /* Light gray background */
+    color: #555; /* Darker text */
+    padding: 8px 15px; /* Smaller padding */
+    font-size: 0.9em; /* Smaller font size */
+    border-radius: 20px; /* More rounded corners */
+    display: inline-flex; /* Allows icon and text to be side-by-side */
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-geolocation:hover {
+    background: #e0e0e0;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
 .btn-full {
     width: 100%;
     display: block;
