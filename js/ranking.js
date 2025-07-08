@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     preco,
                     volume,
                     created_at,
-                    estabelecimentos ( nome, latitude, longitude )
+                    estabelecimentos ( nome, tipo, latitude, longitude )
                 `)
                 .eq('marca', selectedMarca)
                 .eq('volume', selectedVolume)
@@ -136,10 +136,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="ranking-item">
                         <div class="ranking-position">${index + 1}º</div>
                         <div class="ranking-details">
-                            <a href="https://www.google.com/maps/search/?api=1&query=${item.estabelecimentos.latitude},${item.estabelecimentos.longitude}" target="_blank" class="ranking-establishment-name-link">${estabelecimentoNome}</a>
+                            <div class="establishment-info">
+                                <span class="establishment-type">${item.estabelecimentos.tipo || 'Tipo Desconhecido'}</span> - 
+                                <span class="establishment-name">${estabelecimentoNome}</span>
+                            </div>
                             <span class="ranking-price">${formatPrice(item.preco)}</span>
                             <span class="ranking-volume">(${item.volume}ml)</span>
                             <span class="ranking-price-liter">R$ ${precoPorLitro.toFixed(2)}/Litro</span>
+                            <div class="establishment-location-link">
+                                <a href="https://www.google.com/maps/search/?api=1&query=${item.estabelecimentos.latitude},${item.estabelecimentos.longitude}" target="_blank" class="location-link">Clique aqui para saber onde fica</a>
+                            </div>
                             <span class="ranking-date">Registrado em: ${date}</span>
                         </div>
                     </div>

@@ -282,6 +282,38 @@ input[type="text"], input[type="number"], select, textarea {
     margin-top: 5px;
 }
 
+.establishment-info {
+    display: flex;
+    align-items: baseline;
+    margin-top: 5px;
+}
+
+.establishment-type {
+    font-size: 0.8em;
+    color: #666;
+    margin-right: 5px;
+}
+
+.establishment-name {
+    font-size: 1.4em; /* Large size */
+    font-weight: 700;
+    color: #000; /* Black color */
+}
+
+.establishment-location-link {
+    margin-top: 5px;
+}
+
+.location-link {
+    font-size: 0.7em;
+    color: #007bff; /* Blue link color */
+    text-decoration: underline;
+}
+
+.location-link:hover {
+    color: #0056b3;
+}
+
 .ranking-date {
     font-size: 0.8em;
     color: #999;
