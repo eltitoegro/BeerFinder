@@ -381,7 +381,7 @@
 
         <main>
             <div class="main-action">
-                <button class="primary-button">
+                <button class="primary-button" data-target="comparador.html">
                     <span class="button-icon">📊</span>
                     <div>Comparar Preços</div>
                     <div class="button-subtitle">Encontre a melhor oferta agora</div>
@@ -398,11 +398,11 @@
             </div>
 
             <div class="secondary-actions">
-                <button class="secondary-button">
+                <button class="secondary-button" data-target="cadastrar.html">
                     <span class="secondary-button-icon">➕</span>
                     <div>Cadastrar Cerveja</div>
                 </button>
-                <button class="secondary-button">
+                <button class="secondary-button" data-target="estabelecimento.html">
                     <span class="secondary-button-icon">🏪</span>
                     <div>Sou Estabelecimento</div>
                 </button>
@@ -466,33 +466,12 @@
         // Crear burbujas cada 2 segundos
         setInterval(createBubbles, 2000);
 
-        // Animación de contador
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                element.textContent = Math.floor(current).toLocaleString('pt-BR');
-                if (current >= target) {
-                    element.textContent = target.toLocaleString('pt-BR');
-                    clearInterval(timer);
-                }
-            }, 20);
-        }
-
-        // Inicializar contadores
-        document.addEventListener('DOMContentLoaded', () => {
-            animateCounter(document.getElementById('totalCervejas'), 1247);
-            animateCounter(document.getElementById('totalEstabelecimentos'), 89);
-        });
-
         // Agregar clicks a los botones
         document.querySelectorAll('.primary-button, .secondary-button').forEach(button => {
             button.addEventListener('click', () => {
                 const target = button.dataset.target;
                 if (target) {
-                    // Aquí iría la navegación
-                    console.log('Navegando a:', target);
+                    window.location.href = target;
                 }
             });
         });

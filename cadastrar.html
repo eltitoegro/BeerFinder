@@ -370,7 +370,7 @@
 <body>
     <div class="container">
         <header class="header">
-            <a href="index.html" class="btn btn-back">← Voltar</a>
+            <a href="index.html" class="secondary-button" style="width: auto; padding: 10px 15px; margin-bottom: 20px;">← Voltar</a>
             <div class="logo">
                 <span class="logo-icon">🍺</span>
                 <span class="logo-text">BeerFinderR$</span>
@@ -439,8 +439,9 @@
                     <div class="form-group">
                         <label class="form-label">Localização</label>
                         <button type="button" 
-                                class="btn btn-secondary" 
-                                id="getLocationBtn">
+                                class="secondary-button" 
+                                id="getLocationBtn"
+                                style="width: 100%;">
                             📍 Usar Minha Localização
                         </button>
                         <div class="mt-1">
@@ -453,7 +454,7 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <button type="submit" class="btn btn-success btn-full" style="font-size: 1.2rem; padding: 15px 20px;">
+                        <button type="submit" class="primary-button" style="font-size: 1.2rem; padding: 15px 20px;">
                             ✅ Cadastrar Cerveja
                         </button>
                     </div>
@@ -493,38 +494,6 @@
 
         // Crear burbujas cada 2 segundos
         setInterval(createBubbles, 2000);
-
-        // Animación de contador
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                element.textContent = Math.floor(current).toLocaleString('pt-BR');
-                if (current >= target) {
-                    element.textContent = target.toLocaleString('pt-BR');
-                    clearInterval(timer);
-                }
-            }, 20);
-        }
-
-        // Inicializar contadores
-        document.addEventListener('DOMContentLoaded', () => {
-            // No hay contadores específicos en esta página, pero se mantiene la función por si se añaden en el futuro.
-            // animateCounter(document.getElementById('totalCervejas'), 1247);
-            // animateCounter(document.getElementById('totalEstabelecimentos'), 89);
-        });
-
-        // Agregar clicks a los botones
-        document.querySelectorAll('.primary-button, .secondary-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const target = button.dataset.target;
-                if (target) {
-                    // Aquí iría la navegación
-                    console.log('Navegando a:', target);
-                }
-            });
-        });
     </script>
     <footer class="footer">
         <p>Desenvolvido para quem entende de cerveja</p>

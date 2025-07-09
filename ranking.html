@@ -372,7 +372,7 @@
 <body>
     <div class="container">
         <header class="header">
-            <a href="index.html" class="btn btn-back">&larr; Voltar</a>
+            <a href="index.html" class="secondary-button" style="width: auto; padding: 10px 15px; margin-bottom: 20px;">&larr; Voltar</a>
             <div class="logo">
                 <span class="logo-icon">🍺</span>
                 <span class="logo-text">BeerFinderR$</span>
@@ -398,7 +398,7 @@
                 </select>
             </div>
 
-            <button type="button" id="searchRankingBtn" class="btn btn-primary">Buscar Melhor Preço</button>
+            <button type="button" id="searchRankingBtn" class="primary-button">Buscar Melhor Preço</button>
 
             <div id="rankingResults" class="ranking-results">
                 <p class="empty-state">Selecione uma cerveja e um volume para ver o ranking de preços.</p>
@@ -410,7 +410,10 @@
             <p class="footer-version">BeerFinder 1.0.0 - Praia do Rosa, SC - 2025</p>
         </footer>
     </div>
-    <script src="js/ranking.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script type="module" src="js/ranking.js"></script>
     <script>
         // Generar burbujas de cerveza
         function createBubbles() {
@@ -429,38 +432,6 @@
 
         // Crear burbujas cada 2 segundos
         setInterval(createBubbles, 2000);
-
-        // Animación de contador
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                element.textContent = Math.floor(current).toLocaleString('pt-BR');
-                if (current >= target) {
-                    element.textContent = target.toLocaleString('pt-BR');
-                    clearInterval(timer);
-                }
-            }, 20);
-        }
-
-        // Inicializar contadores
-        document.addEventListener('DOMContentLoaded', () => {
-            // No hay contadores específicos en esta página, pero se mantiene la función por si se añaden en el futuro.
-            // animateCounter(document.getElementById('totalCervejas'), 1247);
-            // animateCounter(document.getElementById('totalEstabelecimentos'), 89);
-        });
-
-        // Agregar clicks a los botones
-        document.querySelectorAll('.primary-button, .secondary-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const target = button.dataset.target;
-                if (target) {
-                    // Aquí iría la navegación
-                    console.log('Navegando a:', target);
-                }
-            });
-        });
     </script>
 </body>
 </html>

@@ -451,7 +451,11 @@
             <p class="footer-version">BeerFinder 1.0.0 - Praia do Rosa, SC - 2025</p>
         </footer>
     </div>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
         // Generar burbujas de cerveza
         function createBubbles() {
             const bubble = document.createElement('div');
@@ -470,36 +474,40 @@
         // Crear burbujas cada 2 segundos
         setInterval(createBubbles, 2000);
 
-        // Animación de contador
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                element.textContent = Math.floor(current).toLocaleString('pt-BR');
-                if (current >= target) {
-                    element.textContent = target.toLocaleString('pt-BR');
-                    clearInterval(timer);
-                }
-            }, 20);
-        }
-
-        // Inicializar contadores
-        document.addEventListener('DOMContentLoaded', () => {
-            animateCounter(document.getElementById('totalCervejas'), 1247);
-            animateCounter(document.getElementById('totalEstabelecimentos'), 89);
-        });
-
         // Agregar clicks a los botones
         document.querySelectorAll('.primary-button, .secondary-button').forEach(button => {
             button.addEventListener('click', () => {
                 const target = button.dataset.target;
                 if (target) {
-                    // Aquí iría la navegación
-                    console.log('Navegando a:', target);
+                    window.location.href = target;
                 }
             });
         });
+
+        // Función para obtener y mostrar las estadísticas
+        async function fetchAndDisplayStats() {
+            try {
+                const { count: cervejasCount, error: cervejasError } = await window.supabaseClient
+                    .from('cervejas')
+                    .select('*', { count: 'exact' });
+                if (cervejasError) throw cervejasError;
+                document.getElementById('totalCervejas').textContent = cervejasCount.toLocaleString('pt-BR');
+
+                const { count: estabelecimentosCount, error: estabelecimentosError } = await window.supabaseClient
+                    .from('estabelecimentos')
+                    .select('*', { count: 'exact' });
+                if (estabelecimentosError) throw estabelecimentosError;
+                document.getElementById('totalEstabelecimentos').textContent = estabelecimentosCount.toLocaleString('pt-BR');
+
+            } catch (error) {
+                console.error('Error fetching stats:', error.message);
+                document.getElementById('totalCervejas').textContent = 'N/A';
+                document.getElementById('totalEstabelecimentos').textContent = 'N/A';
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayStats);
     </script>
 </body>
 </html>

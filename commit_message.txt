@@ -1,0 +1,1 @@
+Apply aesthetic changes to all HTML pages based on Instrucciones.txt
