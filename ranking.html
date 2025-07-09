@@ -115,6 +115,138 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
+        /* Estilos de formulario y ranking */
+        .filter-group {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #4a5568;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #ff6b00;
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+        }
+
+        .ranking-results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-position {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ff6b00;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .ranking-details {
+            flex: 1;
+        }
+
+        .establishment-info {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .establishment-type {
+            background-color: #ffe0b2; /* Light orange */
+            color: #e65100; /* Darker orange */
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 5px;
+        }
+
+        .ranking-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #38a169;
+            margin-right: 8px;
+        }
+
+        .ranking-volume {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .ranking-price-liter {
+            font-size: 12px;
+            color: #4a5568;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .establishment-location-link {
+            margin-top: 8px;
+        }
+
+        .location-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .location-link:hover {
+            text-decoration: underline;
+        }
+
+        .ranking-date {
+            font-size: 10px;
+            color: #a0aec0;
+            margin-top: 4px;
+            display: block;
+        }
+
         /* Botones rediseñados */
         .main-action {
             margin-bottom: 20px;
