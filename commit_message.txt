@@ -1,1 +1,3 @@
-Apply aesthetic changes to all HTML pages based on Instrucciones.txt
+feat: Enhance UI consistency across all HTML pages
+
+Applied consistent styling to forms and elements in cadastrar.html, comparador.html, ranking.html, and estabelecimento.html to match the design of index.html.

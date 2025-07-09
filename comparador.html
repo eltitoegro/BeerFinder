@@ -479,15 +479,22 @@
         <main>
             <form id="compareForm">
                 <div class="form-section">
-                    <label for="estabelecimentoSelect">Onde você está comprando?</label>
-                    <select id="estabelecimentoSelect" required>
-                        <option value="">Selecione um estabelecimento</option>
-                        <option value="_new_">Adicionar novo estabelecimento</option>
-                    </select>
-                    <input type="text" id="newEstabelecimentoName" placeholder="Nome do novo estabelecimento" style="display:none; margin-top: 10px;">
+                    <div class="form-group">
+                        <label for="estabelecimentoSelect" class="form-label">Onde você está comprando?</label>
+                        <select id="estabelecimentoSelect" class="form-select" required>
+                            <option value="">Selecione um estabelecimento</option>
+                            <option value="_new_">Adicionar novo estabelecimento</option>
+                        </select>
+                        <input type="text" id="newEstabelecimentoName" class="form-input" placeholder="Nome do novo estabelecimento" style="display:none; margin-top: 10px;">
+                    </div>
 
-                    <label for="marca">Qual é a marca da cerveja?</label>
-                    <input type="text" id="marca" placeholder="Ej: Skol, Brahma" required>
+                    <div class="form-group">
+                        <label for="marcaSelect" class="form-label">Qual é a marca da cerveja?</label>
+                        <select id="marcaSelect" class="form-select" required>
+                            <option value="">Carregando marcas...</option>
+                        </select>
+                        <input type="text" id="newMarcaName" class="form-input" placeholder="Nome da nova marca" style="display:none; margin-top: 10px;">
+                    </div>
                 </div>
 
                 <div class="comparison-grid">

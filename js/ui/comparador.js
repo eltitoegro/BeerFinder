@@ -3,29 +3,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultadoDiv = document.getElementById('resultado');
     const estabelecimentoSelect = document.getElementById('estabelecimentoSelect');
     const newEstabelecimentoNameInput = document.getElementById('newEstabelecimentoName');
+    const marcaSelect = document.getElementById('marcaSelect');
+    const newMarcaNameInput = document.getElementById('newMarcaName');
 
     async function getOrCreateEstabelecimento(nome) {
-        // Fetch all establishments with the given name
         const { data: existentes, error: errorBusca } = await window.supabaseClient
             .from('estabelecimentos')
             .select('id')
             .eq('nome', nome);
 
         if (errorBusca) {
-            // If there's a real error, throw it
             throw errorBusca;
         }
 
-        // If one or more establishments exist, return the ID of the first one
         if (existentes && existentes.length > 0) {
             return existentes[0].id;
         } else {
-            // If it doesn't exist, create it
             const { data: novo, error: errorInsert } = await window.supabaseClient
                 .from('estabelecimentos')
                 .insert([{ nome }])
                 .select('id')
-                .single(); // .single() is correct here as we expect one new row
+                .single();
 
             if (errorInsert) {
                 throw errorInsert;
@@ -41,6 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .select('id, nome');
             if (error) throw error;
 
+            // Sort establishments alphabetically by name
+            data.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            // Clear existing options except the first two (placeholder and add new)
             while (estabelecimentoSelect.options.length > 2) {
                 estabelecimentoSelect.remove(2);
             }
@@ -56,7 +58,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function populateMarcaSelect() {
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('cervejas')
+                .select('marca');
+            if (error) throw error;
+
+            const uniqueMarcas = [...new Set(data.map(item => item.marca))];
+            uniqueMarcas.sort((a, b) => a.localeCompare(b));
+
+            marcaSelect.innerHTML = '<option value="">Selecione uma marca</option>';
+            uniqueMarcas.forEach(marca => {
+                const option = document.createElement('option');
+                option.value = marca;
+                option.textContent = marca;
+                marcaSelect.appendChild(option);
+            });
+            marcaSelect.innerHTML += '<option value="_new_">Outra (digite abaixo)</option>';
+
+        } catch (error) {
+            console.error('Erro ao carregar marcas de cerveja:', error);
+            marcaSelect.innerHTML = '<option value="">Erro ao carregar marcas</option>';
+        }
+    }
+
     populateEstabelecimentosSelect();
+    populateMarcaSelect();
 
     estabelecimentoSelect.addEventListener('change', () => {
         if (estabelecimentoSelect.value === '_new_') {
@@ -66,6 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
             newEstabelecimentoNameInput.style.display = 'none';
             newEstabelecimentoNameInput.removeAttribute('required');
             newEstabelecimentoNameInput.value = '';
+        }
+    });
+
+    marcaSelect.addEventListener('change', () => {
+        if (marcaSelect.value === '_new_') {
+            newMarcaNameInput.style.display = 'block';
+            newMarcaNameInput.setAttribute('required', 'true');
+        } else {
+            newMarcaNameInput.style.display = 'none';
+            newMarcaNameInput.removeAttribute('required');
+            newMarcaNameInput.value = '';
         }
     });
 
@@ -79,7 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
             nomeEstabelecimento = estabelecimentoSelect.value;
         }
 
-        const marca = document.getElementById('marca').value.trim();
+        let marca;
+        if (marcaSelect.value === '_new_') {
+            marca = newMarcaNameInput.value.trim();
+        } else {
+            marca = marcaSelect.value;
+        }
+
         const volume1 = parseInt(document.getElementById('volume1').value);
         const preco1 = parseFloat(document.getElementById('preco1').value);
         const volume2 = parseInt(document.getElementById('volume2').value);
@@ -163,7 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
             resultadoDiv.classList.remove('hidden');
             form.reset();
             newEstabelecimentoNameInput.style.display = 'none';
+            newMarcaNameInput.style.display = 'none';
             populateEstabelecimentosSelect();
+            populateMarcaSelect();
 
         } catch (error) {
             console.error('Erro no processo de comparação:', error);
