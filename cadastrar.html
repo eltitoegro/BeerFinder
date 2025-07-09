@@ -4,11 +4,368 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Cerveja - BeerFinder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(180deg, #fff8dc 0%, #ffd700 15%, #ff9a56 85%, #ff6b00 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efecto de burbujas de cerveza */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header mejorado */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+            animation: beer-wobble 3s infinite ease-in-out;
+        }
+
+        @keyframes beer-wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .logo-text {
+            font-size: 48px;
+            font-weight: 800;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: pulse-logo 2s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: #2d3748;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .savings-preview {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            color: #2d3748;
+            font-weight: 500;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: bounce-in 1s ease-out;
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Botones rediseñados */
+        .main-action {
+            margin-bottom: 20px;
+        }
+
+        .primary-button, .secondary-button {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .primary-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .primary-button:hover::before {
+            left: 100%;
+        }
+
+        .primary-button:hover, .secondary-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .primary-button:active, .secondary-button:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .button-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+            animation: icon-bounce 2s infinite;
+        }
+
+        @keyframes icon-bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .primary-button div:first-of-type {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a252f;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .button-subtitle {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .button-legend {
+            font-size: 12px;
+            color: #718096;
+            font-style: normal;
+            margin-top: 5px;
+            text-align: center;
+            line-height: 1.3;
+            max-width: 280px;
+        }
+
+        /* Acciones secundarias */
+        .secondary-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .secondary-button {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .secondary-button-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .secondary-button div {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3748;
+            line-height: 1.2;
+        }
+
+        /* Stats mejoradas */
+        .stats {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a252f;
+            margin-bottom: 5px;
+            animation: count-up 2s ease-out;
+        }
+
+        @keyframes count-up {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        /* Ofertas destacadas */
+        .featured-deals {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .featured-deals h3 {
+            color: #1a252f;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .deal-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .deal-item:last-child {
+            border-bottom: none;
+        }
+
+        .deal-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .deal-info {
+            flex: 1;
+        }
+
+        .deal-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .deal-price {
+            color: #38a169;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .deal-location {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            color: rgba(44, 62, 80, 0.8);
+            font-size: 12px;
+            padding: 20px 0;
+        }
+
+        .footer-version {
+            font-size: 10px;
+            color: rgba(44, 62, 80, 0.6);
+            margin-top: 5px;
+        }
+
+        /* Responsive mejorado para móvil */
+        @media (max-width: 350px) {
+            .logo-text { font-size: 36px; }
+            .button-icon { font-size: 24px; }
+            .container { padding: 15px; }
+            .primary-button div:first-of-type { font-size: 16px; }
+            .button-subtitle { font-size: 13px; }
+            .button-legend { font-size: 11px; max-width: 250px; }
+        }
+
+        /* Mejoras específicas para navegadores móviles */
+        @media (max-width: 480px) {
+            .primary-button {
+                padding: 18px 16px;
+                margin-bottom: 16px;
+            }
+            
+            .secondary-actions {
+                gap: 12px;
+            }
+            
+            .secondary-button {
+                padding: 14px 8px;
+                min-height: 80px;
+            }
+            
+            .secondary-button div {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -19,6 +376,9 @@
                 <span class="logo-text">BeerFinderR$</span>
             </div>
             <div class="tagline">Fortaleça a resistência, cadastre preços</div>
+            <div class="savings-preview">
+                💰 Usuarios economizam até R$ 60 por mês
+            </div>
         </header>
 
         <main class="main-content">
@@ -113,12 +473,59 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/ui/cadastrar.js"></script>
+    <script>
+        // Generar burbujas de cerveza
+        function createBubbles() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.width = bubble.style.height = Math.random() * 10 + 5 + 'px';
+            bubble.style.animationDelay = Math.random() * 2 + 's';
+            bubble.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(bubble);
+
+            setTimeout(() => {
+                bubble.remove();
+            }, 6000);
+        }
+
+        // Crear burbujas cada 2 segundos
+        setInterval(createBubbles, 2000);
+
+        // Animación de contador
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                element.textContent = Math.floor(current).toLocaleString('pt-BR');
+                if (current >= target) {
+                    element.textContent = target.toLocaleString('pt-BR');
+                    clearInterval(timer);
+                }
+            }, 20);
+        }
+
+        // Inicializar contadores
+        document.addEventListener('DOMContentLoaded', () => {
+            // No hay contadores específicos en esta página, pero se mantiene la función por si se añaden en el futuro.
+            // animateCounter(document.getElementById('totalCervejas'), 1247);
+            // animateCounter(document.getElementById('totalEstabelecimentos'), 89);
+        });
+
+        // Agregar clicks a los botones
+        document.querySelectorAll('.primary-button, .secondary-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+                if (target) {
+                    // Aquí iría la navegación
+                    console.log('Navegando a:', target);
+                }
+            });
+        });
+    </script>
     <footer class="footer">
         <p>Desenvolvido para quem entende de cerveja</p>
         <p class="footer-version">BeerFinder 1.0.0 - Praia do Rosa, SC - 2025</p>
