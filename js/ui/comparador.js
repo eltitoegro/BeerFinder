@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .select('marca');
 
             console.log('Datos de marcas (comparador):', data);
-            console.error('Error al cargar marcas (comparador):', error);
+            if (error) console.error('Error al cargar marcas (comparador):', error);
 
             if (error) throw error;
 
