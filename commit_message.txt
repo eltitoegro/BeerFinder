@@ -1,3 +1,0 @@
-feat: Update featured deals refresh rate and apply final UI adjustments
-
-Adjusted the refresh rate for featured deals to 8 hours to optimize Supabase calls. Applied final UI adjustments to comparador.html for input field sizing and overall aesthetic consistency. Ensured all dropdowns are sorted correctly.
