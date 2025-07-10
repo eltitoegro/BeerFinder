@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (error) throw error;
 
-            // Limpa as opções existentes, exceto as duas primeiras (placeholder e adicionar novo)
+            // Ordena los establecimientos alfabéticamente por nombre
+            data.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            // Limpia las opciones existentes, excepto las dos primeras (placeholder y adicionar nuevo)
             while (estabelecimentoSelect.options.length > 2) {
                 estabelecimentoSelect.remove(2);
             }
@@ -33,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     populateEstabelecimentosSelect();
 
     estabelecimentoSelect.addEventListener('change', () => {
+        console.log('Valor seleccionado:', estabelecimentoSelect.value);
         if (estabelecimentoSelect.value === '_new_') {
             newEstabelecimentoNameInput.style.display = 'block';
             newEstabelecimentoNameInput.setAttribute('required', 'true');
@@ -102,7 +106,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 
             }, error => {
                 console.error('Erro ao obter localização:', error);
-                alert('Não foi possível obter sua localização. Verifique as permissões do navegador.');
+                let errorMessage = 'Não foi possível obter sua localização.';
+                if (error.code === error.PERMISSION_DENIED) {
+                    errorMessage += ' Por favor, verifique as permissões de localização do seu navegador e do seu dispositivo.';
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    errorMessage += ' A informação de localização não está disponível.';
+                } else if (error.code === error.TIMEOUT) {
+                    errorMessage += ' A tentativa de obter a localização expirou.';
+                }
+                alert(errorMessage);
             });
         } else {
             alert('Geolocalização não é suportada por este navegador.');

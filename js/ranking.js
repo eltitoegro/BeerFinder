@@ -32,10 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             allCervejas = data; // Armazena todas as cervejas
 
-            const uniqueBeers = new Set();
-            data.forEach(beer => {
-                uniqueBeers.add(beer.marca);
-            });
+            const uniqueBeers = Array.from(new Set(data.map(item => item.marca))).sort();
 
             beerSelect.innerHTML = '<option value="">Selecione uma cerveja</option>';
             uniqueBeers.forEach(marca => {

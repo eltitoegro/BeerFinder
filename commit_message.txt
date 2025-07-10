@@ -1,3 +1,3 @@
-feat: Enhance UI consistency across all HTML pages
+feat: Enhance comparador.html UI and functionality
 
-Applied consistent styling to forms and elements in cadastrar.html, comparador.html, ranking.html, and estabelecimento.html to match the design of index.html.
+Improved the aesthetic and functionality of comparador.html by restructuring the form, adding a dynamic beer brand selection, and ensuring alphabetical sorting for establishments and brands.

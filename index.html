@@ -16,7 +16,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(180deg, #fff8dc 0%, #ffd700 15%, #ff9a56 85%, #ff6b00 100%);
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 1%, #FFDAB9 15%, #DAA520 100%);
             min-height: 100vh;
             color: #333;
             position: relative;
@@ -168,6 +168,13 @@
             display: block;
             margin-bottom: 10px;
             animation: icon-bounce 2s infinite;
+        }
+
+        .beer-vs-beer {
+            font-size: 28px; /* Ajusta el tamaño para que quepan bien */
+            display: block;
+            margin-bottom: 10px;
+            animation: icon-bounce 2s infinite; /* Misma animación */
         }
 
         @keyframes icon-bounce {
@@ -384,20 +391,20 @@
 
         <main>
             <div class="main-action">
-                <button class="primary-button" data-target="comparador.html">
-                    <span class="button-icon">📊</span>
-                    <div>Comparar Preços</div>
-                    <div class="button-subtitle">Encontre a melhor oferta agora</div>
-                    <div class="button-legend">Coloque duas cervejas da mesma marca: o sistema calcula o preço por litro e mostra qual comprar</div>
-                </button>
-            </div>
-
-            <div class="main-action">
                 <button class="primary-button" data-target="ranking.html">
                     <span class="button-icon">🏆</span>
                     <div>Ranking da Cerveja Mais Barata</div>
                     <div class="button-subtitle">Sua cerveja favorita, onde comprar</div>
                     <div class="button-legend">Digite sua cerveja preferida e encontre os melhores locais para comprar</div>
+                </button>
+            </div>
+
+            <div class="main-action">
+                <button class="primary-button" data-target="comparador.html">
+                    <span class="button-icon beer-vs-beer">🍺 vs 🍺</span>
+                    <div>Comparar Preços</div>
+                    <div class="button-subtitle">Encontre a melhor oferta agora</div>
+                    <div class="button-legend">Coloque duas cervejas da mesma marca: o sistema calcula o preço por litro e mostra qual comprar</div>
                 </button>
             </div>
 
@@ -414,21 +421,8 @@
 
             <div class="featured-deals">
                 <h3>🔥 Ofertas Destacadas</h3>
-                <div class="deal-item">
-                    <div class="deal-icon">🍺</div>
-                    <div class="deal-info">
-                        <div class="deal-name">Brahma 350ml</div>
-                        <div class="deal-price">R$ 2,50</div>
-                        <div class="deal-location">Mercado Central - 200m</div>
-                    </div>
-                </div>
-                <div class="deal-item">
-                    <div class="deal-icon">🍻</div>
-                    <div class="deal-info">
-                        <div class="deal-name">Skol 269ml</div>
-                        <div class="deal-price">R$ 1,80</div>
-                        <div class="deal-location">Padaria do João - 350m</div>
-                    </div>
+                <div class="deal-items-container">
+                    <!-- Las ofertas destacadas se cargarán aquí dinámicamente -->
                 </div>
             </div>
 
@@ -455,6 +449,7 @@
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/ui/featuredDeals.js"></script>
     <script type="module">
         // Generar burbujas de cerveza
         function createBubbles() {
@@ -471,8 +466,8 @@
             }, 6000);
         }
 
-        // Crear burbujas cada 2 segundos
-        setInterval(createBubbles, 2000);
+        // Crear burbujas cada 1 segundo
+        setInterval(createBubbles, 1000);
 
         // Agregar clicks a los botones
         document.querySelectorAll('.primary-button, .secondary-button').forEach(button => {
