@@ -7,33 +7,36 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para buscar e popular o select de estabelecimentos
     async function populateEstabelecimentosSelect() {
         try {
+            
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
+
+            console.log('Datos de establecimientos:', data);
+            console.error('Error al cargar establecimientos:', error);
 
             if (error) throw error;
 
             // Ordena los establecimientos alfabéticamente por nombre
             data.sort((a, b) => a.nome.localeCompare(b.nome));
 
-            // Limpia las opciones existentes, excepto las dos primeras (placeholder y adicionar nuevo)
-            while (estabelecimentoSelect.options.length > 2) {
-                estabelecimentoSelect.remove(2);
-            }
-
+            // Construye las opciones como una cadena HTML
+            let optionsHtml = '<option value="">Selecione um estabelecimento</option><option value="_new_">Adicionar novo estabelecimento</option>';
             data.forEach(estab => {
-                const option = document.createElement('option');
-                option.value = estab.nome;
-                option.textContent = estab.nome;
-                estabelecimentoSelect.appendChild(option);
+                optionsHtml += `<option value="${estab.nome}">${estab.nome}</option>`;
             });
+            estabelecimentoSelect.innerHTML = optionsHtml;
+            
+
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
+            alert('Erro ao carregar estabelecimentos: ' + error.message);
         }
     }
 
     // Popula o select ao carregar a página
     populateEstabelecimentosSelect();
+    console.log('Estabelecimento Select innerHTML after populate:', estabelecimentoSelect.innerHTML);
 
     estabelecimentoSelect.addEventListener('change', () => {
         console.log('Valor seleccionado:', estabelecimentoSelect.value);

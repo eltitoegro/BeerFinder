@@ -14,7 +14,7 @@ const SupabaseConfig = {
                 marca: 'Brahma',
                 preco: 3.50,
                 volume: 350,
-                tipo_envase: 'lata',
+                
                 estabelecimento: 'Mercado do João',
                 localizacao: 'Centro - Praia do Rosa',
                 data_cadastro: '2024-01-15'
@@ -24,7 +24,7 @@ const SupabaseConfig = {
                 marca: 'Skol',
                 preco: 3.20,
                 volume: 350,
-                tipo_envase: 'lata',
+                
                 estabelecimento: 'Padaria Central',
                 localizacao: 'Rosa Sul',
                 data_cadastro: '2024-01-15'
@@ -34,7 +34,7 @@ const SupabaseConfig = {
                 marca: 'Heineken',
                 preco: 5.80,
                 volume: 350,
-                tipo_envase: 'lata',
+                
                 estabelecimento: 'Mercado do João',
                 localizacao: 'Centro - Praia do Rosa',
                 data_cadastro: '2024-01-14'
@@ -44,7 +44,7 @@ const SupabaseConfig = {
                 marca: 'Brahma',
                 preco: 8.90,
                 volume: 600,
-                tipo_envase: 'garrafa_600ml',
+                
                 estabelecimento: 'Distribuidora Rosa',
                 localizacao: 'Estrada Geral',
                 data_cadastro: '2024-01-14'
@@ -54,7 +54,7 @@ const SupabaseConfig = {
                 marca: 'Skol',
                 preco: 12.50,
                 volume: 1000,
-                tipo_envase: 'garrafa_1l',
+                
                 estabelecimento: 'Mercado do João',
                 localizacao: 'Centro - Praia do Rosa',
                 data_cadastro: '2024-01-13'
@@ -172,8 +172,7 @@ const DataHelper = {
                 query = query.ilike('marca', `%${filters.marca}%`);
             }
             
-            if (filters.tipo_envase) {
-                query = query.eq('tipo_envase', filters.tipo_envase);
+            
             }
             
             // Ordenar por preço por litro (calculado)

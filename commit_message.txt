@@ -1,3 +1,3 @@
-feat: Enhance comparador.html UI and functionality
+feat: Update featured deals refresh rate and apply final UI adjustments
 
-Improved the aesthetic and functionality of comparador.html by restructuring the form, adding a dynamic beer brand selection, and ensuring alphabetical sorting for establishments and brands.
+Adjusted the refresh rate for featured deals to 8 hours to optimize Supabase calls. Applied final UI adjustments to comparador.html for input field sizing and overall aesthetic consistency. Ensured all dropdowns are sorted correctly.

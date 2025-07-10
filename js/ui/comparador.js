@@ -1,3 +1,5 @@
+import { getOrCreateEstabelecimento } from '../utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('compareForm');
     const resultadoDiv = document.getElementById('resultado');
@@ -6,85 +8,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const marcaSelect = document.getElementById('marcaSelect');
     const newMarcaNameInput = document.getElementById('newMarcaName');
 
-    async function getOrCreateEstabelecimento(nome) {
-        const { data: existentes, error: errorBusca } = await window.supabaseClient
-            .from('estabelecimentos')
-            .select('id')
-            .eq('nome', nome);
-
-        if (errorBusca) {
-            throw errorBusca;
-        }
-
-        if (existentes && existentes.length > 0) {
-            return existentes[0].id;
-        } else {
-            const { data: novo, error: errorInsert } = await window.supabaseClient
-                .from('estabelecimentos')
-                .insert([{ nome }])
-                .select('id')
-                .single();
-
-            if (errorInsert) {
-                throw errorInsert;
-            }
-            return novo.id;
-        }
-    }
+    
 
     async function populateEstabelecimentosSelect() {
         try {
+            
             const { data, error } = await window.supabaseClient
                 .from('estabelecimentos')
                 .select('id, nome');
+
+            console.log('Datos de establecimientos (comparador):', data);
+            console.error('Error al cargar establecimientos (comparador):', error);
+
             if (error) throw error;
 
             // Sort establishments alphabetically by name
             data.sort((a, b) => a.nome.localeCompare(b.nome));
 
-            // Clear existing options except the first two (placeholder and add new)
-            while (estabelecimentoSelect.options.length > 2) {
-                estabelecimentoSelect.remove(2);
-            }
-
+            // Construye las opciones como una cadena HTML
+            let optionsHtml = '<option value="">Selecione um estabelecimento</option><option value="_new_">Adicionar novo estabelecimento</option>';
             data.forEach(estab => {
-                const option = document.createElement('option');
-                option.value = estab.nome;
-                option.textContent = estab.nome;
-                estabelecimentoSelect.appendChild(option);
+                optionsHtml += `<option value="${estab.nome}">${estab.nome}</option>`;
             });
+            estabelecimentoSelect.innerHTML = optionsHtml;
+            
+
         } catch (error) {
             console.error('Erro ao carregar estabelecimentos:', error);
+            
         }
     }
 
     async function populateMarcaSelect() {
         try {
+            
             const { data, error } = await window.supabaseClient
                 .from('cervejas')
                 .select('marca');
+
+            console.log('Datos de marcas (comparador):', data);
+            console.error('Error al cargar marcas (comparador):', error);
+
             if (error) throw error;
 
             const uniqueMarcas = [...new Set(data.map(item => item.marca))];
             uniqueMarcas.sort((a, b) => a.localeCompare(b));
 
-            marcaSelect.innerHTML = '<option value="">Selecione uma marca</option>';
+            // Construye las opciones como una cadena HTML
+            let optionsHtml = '<option value="">Selecione uma marca</option>';
             uniqueMarcas.forEach(marca => {
-                const option = document.createElement('option');
-                option.value = marca;
-                option.textContent = marca;
-                marcaSelect.appendChild(option);
+                optionsHtml += `<option value="${marca}">${marca}</option>`;
             });
-            marcaSelect.innerHTML += '<option value="_new_">Outra (digite abaixo)</option>';
+            optionsHtml += '<option value="_new_">Outra (digite abaixo)</option>';
+            marcaSelect.innerHTML = optionsHtml;
+            
 
         } catch (error) {
             console.error('Erro ao carregar marcas de cerveja:', error);
+            
             marcaSelect.innerHTML = '<option value="">Erro ao carregar marcas</option>';
         }
     }
 
     populateEstabelecimentosSelect();
+    console.log('Estabelecimento Select innerHTML after populate (comparador):', estabelecimentoSelect.innerHTML);
     populateMarcaSelect();
+    console.log('Marca Select innerHTML after populate (comparador):', marcaSelect.innerHTML);
 
     estabelecimentoSelect.addEventListener('change', () => {
         if (estabelecimentoSelect.value === '_new_') {
@@ -130,17 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const volume2 = parseInt(document.getElementById('volume2').value);
         const preco2 = parseFloat(document.getElementById('preco2').value);
 
-        if (!nomeEstabelecimento || !marca || isNaN(volume1) || isNaN(preco1) || isNaN(volume2) || isNaN(preco2)) {
-            alert('Por favor, preencha todos os campos corretamente.');
-            return;
-        }
+        
 
         try {
             const estabelecimento_id = await getOrCreateEstabelecimento(nomeEstabelecimento);
 
             const cervejasParaInserir = [
-                { marca, volume: volume1, preco: preco1, estabelecimento_id, tipo_envase: 'comparador' },
-                { marca, volume: volume2, preco: preco2, estabelecimento_id, tipo_envase: 'comparador' }
+                { marca, volume: volume1, preco: preco1, estabelecimento_id },
+                { marca, volume: volume2, preco: preco2, estabelecimento_id }
             ];
 
             await window.supabaseClient.from('cervejas').insert(cervejasParaInserir);
@@ -214,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Erro no processo de comparação:', error);
-            alert(`Ocorreu um erro: ${error.message}`);
+            
         }
     });
 });
