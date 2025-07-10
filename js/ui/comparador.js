@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .select('id, nome');
 
             console.log('Datos de establecimientos (comparador):', data);
-            console.error('Error al cargar establecimientos (comparador):', error);
+            if (error) console.error('Error al cargar establecimientos (comparador):', error);
 
             if (error) throw error;
 
