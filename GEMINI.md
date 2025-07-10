@@ -41,7 +41,7 @@ Para garantizar la seguridad y el funcionamiento correcto de la aplicación, las
     *   Agregue dos nuevas variables de ambiente:
         *   **Clave:** `SUPABASE_URL` | **Valor:** Su URL real del Supabase.
         *   **Clave:** `SUPABASE_ANON_KEY` | **Valor:** Su clave anónima pública real del Supabase.
-    *   **Importante:** Después de configurar las variables, **dispare un nuevo deploy en Netlify** para que los cambios surtan efecto.
+    *   **Estado:** Las variables de ambiente fueron configuradas en el Netlify. **Importante:** Dispare un nuevo deploy en Netlify para que los cambios surtan efecto.
 
 2.  **Para Desarrollo Local (Mejor Práctica):**
     *   **`js/config.js`:** Este archivo debe contener sus claves reales de Supabase para que la aplicación funcione localmente. **ATENCIÓN: Este archivo NO debe ser commitado al repositorio con las claves reales.**
